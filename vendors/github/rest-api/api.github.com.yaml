@@ -4781,6 +4781,459 @@ paths:
         enabledForGitHubApps: true
         category: actions
         subcategory: cache
+  "/orgs/{org}/actions/hosted-runners":
+    get:
+      summary: List GitHub-hosted runners for an organization
+      description: |-
+        Lists all GitHub-hosted runners configured in an organization.
+
+        OAuth app tokens and personal access tokens (classic) need the `manage_runner:org` scope to use this endpoint.
+      tags:
+      - actions
+      operationId: actions/list-hosted-runners-for-org
+      externalDocs:
+        description: API method documentation
+        url: https://docs.github.com/rest/actions/hosted-runners#list-github-hosted-runners-for-an-organization
+      parameters:
+      - "$ref": "#/components/parameters/org"
+      - "$ref": "#/components/parameters/per-page"
+      - "$ref": "#/components/parameters/page"
+      responses:
+        '200':
+          description: Response
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - total_count
+                - runners
+                properties:
+                  total_count:
+                    type: integer
+                  runners:
+                    type: array
+                    items:
+                      "$ref": "#/components/schemas/actions-hosted-runner"
+              examples:
+                default:
+                  "$ref": "#/components/examples/actions-hosted-runner-paginated"
+          headers:
+            Link:
+              "$ref": "#/components/headers/link"
+      x-github:
+        githubCloudOnly: false
+        enabledForGitHubApps: true
+        category: actions
+        subcategory: hosted-runners
+    post:
+      summary: Create a GitHub-hosted runner for an organization
+      description: |-
+        Creates a GitHub-hosted runner for an organization.
+        OAuth tokens and personal access tokens (classic) need the `manage_runners:org` scope to use this endpoint.
+      operationId: actions/create-hosted-runner-for-org
+      tags:
+      - actions
+      externalDocs:
+        description: API method documentation
+        url: https://docs.github.com/rest/actions/hosted-runners#create-a-github-hosted-runner-for-an-organization
+      parameters:
+      - "$ref": "#/components/parameters/org"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  description: Name of the runner. Must be between 1 and 64 characters
+                    and may only contain upper and lowercase letters a-z, numbers
+                    0-9, '.', '-', and '_'.
+                  type: string
+                image:
+                  description: The image of runner. To list all available images,
+                    use `GET /actions/hosted-runners/images/github-owned` or `GET
+                    /actions/hosted-runners/images/partner`.
+                  type: object
+                  properties:
+                    id:
+                      description: The unique identifier of the runner image.
+                      type: string
+                    source:
+                      description: The source of the runner image.
+                      type: string
+                      enum:
+                      - github
+                      - partner
+                      - custom
+                    version:
+                      description: The version of the runner image to deploy. This
+                        is relevant only for runners using custom images.
+                      type:
+                      - string
+                      - 'null'
+                size:
+                  description: The machine size of the runner. To list available sizes,
+                    use `GET actions/hosted-runners/machine-sizes`
+                  type: string
+                runner_group_id:
+                  description: The existing runner group to add this runner to.
+                  type: integer
+                maximum_runners:
+                  description: The maximum amount of runners to scale up to. Runners
+                    will not auto-scale above this number. Use this setting to limit
+                    your cost.
+                  type: integer
+                enable_static_ip:
+                  description: Whether this runner should be created with a static
+                    public IP. Note limit on account. To list limits on account, use
+                    `GET actions/hosted-runners/limits`
+                  type: boolean
+              required:
+              - name
+              - image
+              - size
+              - runner_group_id
+            examples:
+              default:
+                value:
+                  name: My Hosted runner
+                  image:
+                    id: ubuntu-latest
+                    source: github
+                    version: latest
+                  runner_group_id: 1
+                  size: 4-core
+                  maximum_runners: 50
+                  enable_static_ip: false
+      responses:
+        '201':
+          description: Response
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/actions-hosted-runner"
+              examples:
+                default:
+                  "$ref": "#/components/examples/actions-hosted-runner"
+      x-github:
+        enabledForGitHubApps: true
+        githubCloudOnly: false
+        category: actions
+        subcategory: hosted-runners
+  "/orgs/{org}/actions/hosted-runners/images/github-owned":
+    get:
+      summary: Get GitHub-owned images for GitHub-hosted runners in an organization
+      description: Get the list of GitHub-owned images available for GitHub-hosted
+        runners for an organization.
+      operationId: actions/get-hosted-runners-github-owned-images-for-org
+      tags:
+      - actions
+      externalDocs:
+        description: API method documentation
+        url: https://docs.github.com/rest/actions/hosted-runners#get-github-owned-images-for-github-hosted-runners-in-an-organization
+      parameters:
+      - "$ref": "#/components/parameters/org"
+      responses:
+        '200':
+          description: Response
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - total_count
+                - images
+                properties:
+                  total_count:
+                    type: integer
+                  images:
+                    type: array
+                    items:
+                      "$ref": "#/components/schemas/actions-hosted-runner-image"
+              examples:
+                default:
+                  "$ref": "#/components/examples/actions-hosted-runner-image"
+      x-github:
+        githubCloudOnly: false
+        enabledForGitHubApps: true
+        category: actions
+        subcategory: hosted-runners
+  "/orgs/{org}/actions/hosted-runners/images/partner":
+    get:
+      summary: Get partner images for GitHub-hosted runners in an organization
+      description: Get the list of partner images available for GitHub-hosted runners
+        for an organization.
+      operationId: actions/get-hosted-runners-partner-images-for-org
+      tags:
+      - actions
+      externalDocs:
+        description: API method documentation
+        url: https://docs.github.com/rest/actions/hosted-runners#get-partner-images-for-github-hosted-runners-in-an-organization
+      parameters:
+      - "$ref": "#/components/parameters/org"
+      responses:
+        '200':
+          description: Response
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - total_count
+                - images
+                properties:
+                  total_count:
+                    type: integer
+                  images:
+                    type: array
+                    items:
+                      "$ref": "#/components/schemas/actions-hosted-runner-image"
+              examples:
+                default:
+                  "$ref": "#/components/examples/actions-hosted-runner-image"
+      x-github:
+        githubCloudOnly: false
+        enabledForGitHubApps: true
+        category: actions
+        subcategory: hosted-runners
+  "/orgs/{org}/actions/hosted-runners/limits":
+    get:
+      summary: Get limits on GitHub-hosted runners for an organization
+      description: Get the GitHub-hosted runners limits for an organization.
+      operationId: actions/get-hosted-runners-limits-for-org
+      tags:
+      - actions
+      externalDocs:
+        description: API method documentation
+        url: https://docs.github.com/rest/actions/hosted-runners#get-limits-on-github-hosted-runners-for-an-organization
+      parameters:
+      - "$ref": "#/components/parameters/org"
+      responses:
+        '200':
+          description: Response
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/actions-hosted-runner-limits"
+              examples:
+                default:
+                  "$ref": "#/components/examples/actions-hosted-runner-limits-default"
+      x-github:
+        githubCloudOnly: false
+        enabledForGitHubApps: true
+        category: actions
+        subcategory: hosted-runners
+  "/orgs/{org}/actions/hosted-runners/machine-sizes":
+    get:
+      summary: Get GitHub-hosted runners machine specs for an organization
+      description: Get the list of machine specs available for GitHub-hosted runners
+        for an organization.
+      operationId: actions/get-hosted-runners-machine-specs-for-org
+      tags:
+      - actions
+      externalDocs:
+        description: API method documentation
+        url: https://docs.github.com/rest/actions/hosted-runners#get-github-hosted-runners-machine-specs-for-an-organization
+      parameters:
+      - "$ref": "#/components/parameters/org"
+      responses:
+        '200':
+          description: Response
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - total_count
+                - machine_specs
+                properties:
+                  total_count:
+                    type: integer
+                  machine_specs:
+                    type: array
+                    items:
+                      "$ref": "#/components/schemas/actions-hosted-runner-machine-spec"
+              examples:
+                default:
+                  "$ref": "#/components/examples/actions-hosted-runner-machine-spec"
+      x-github:
+        githubCloudOnly: false
+        enabledForGitHubApps: true
+        category: actions
+        subcategory: hosted-runners
+  "/orgs/{org}/actions/hosted-runners/platforms":
+    get:
+      summary: Get platforms for GitHub-hosted runners in an organization
+      description: Get the list of platforms available for GitHub-hosted runners for
+        an organization.
+      operationId: actions/get-hosted-runners-platforms-for-org
+      tags:
+      - actions
+      externalDocs:
+        description: API method documentation
+        url: https://docs.github.com/rest/actions/hosted-runners#get-platforms-for-github-hosted-runners-in-an-organization
+      parameters:
+      - "$ref": "#/components/parameters/org"
+      responses:
+        '200':
+          description: Response
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - total_count
+                - platforms
+                properties:
+                  total_count:
+                    type: integer
+                  platforms:
+                    type: array
+                    items:
+                      type: string
+              examples:
+                default:
+                  value:
+                    total_count: 1
+                    platforms:
+                    - linux-x64
+                    - win-x64
+      x-github:
+        githubCloudOnly: false
+        enabledForGitHubApps: true
+        category: actions
+        subcategory: hosted-runners
+  "/orgs/{org}/actions/hosted-runners/{hosted_runner_id}":
+    get:
+      summary: Get a GitHub-hosted runner for an organization
+      description: |-
+        Gets a GitHub-hosted runner configured in an organization.
+
+        OAuth app tokens and personal access tokens (classic) need the `manage_runners:org` scope to use this endpoint.
+      tags:
+      - actions
+      operationId: actions/get-hosted-runner-for-org
+      externalDocs:
+        description: API method documentation
+        url: https://docs.github.com/rest/actions/hosted-runners#get-a-github-hosted-runner-for-an-organization
+      parameters:
+      - "$ref": "#/components/parameters/org"
+      - "$ref": "#/components/parameters/hosted-runner-id"
+      responses:
+        '200':
+          description: Response
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/actions-hosted-runner"
+              examples:
+                default:
+                  "$ref": "#/components/examples/actions-hosted-runner"
+          headers:
+            Link:
+              "$ref": "#/components/headers/link"
+      x-github:
+        githubCloudOnly: false
+        enabledForGitHubApps: true
+        category: actions
+        subcategory: hosted-runners
+    patch:
+      summary: Update a GitHub-hosted runner for an organization
+      description: |-
+        Updates a GitHub-hosted runner for an organization.
+        OAuth app tokens and personal access tokens (classic) need the `manage_runners:org` scope to use this endpoint.
+      operationId: actions/update-hosted-runner-for-org
+      tags:
+      - actions
+      externalDocs:
+        description: API method documentation
+        url: https://docs.github.com/rest/actions/hosted-runners#update-a-github-hosted-runner-for-an-organization
+      parameters:
+      - "$ref": "#/components/parameters/org"
+      - "$ref": "#/components/parameters/hosted-runner-id"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  description: Name of the runner. Must be between 1 and 64 characters
+                    and may only contain upper and lowercase letters a-z, numbers
+                    0-9, '.', '-', and '_'.
+                  type: string
+                runner_group_id:
+                  description: The existing runner group to add this runner to.
+                  type: integer
+                maximum_runners:
+                  description: The maximum amount of runners to scale up to. Runners
+                    will not auto-scale above this number. Use this setting to limit
+                    your cost.
+                  type: integer
+                enable_static_ip:
+                  description: Whether this runner should be updated with a static
+                    public IP. Note limit on account. To list limits on account, use
+                    `GET actions/hosted-runners/limits`
+                  type: boolean
+                image_version:
+                  description: The version of the runner image to deploy. This is
+                    relevant only for runners using custom images.
+                  type:
+                  - string
+                  - 'null'
+            examples:
+              default:
+                value:
+                  name: My larger runner
+                  runner_group_id: 1
+                  maximum_runners: 50
+                  enable_static_ip: false
+                  image_version: 1.0.0
+      responses:
+        '200':
+          description: Response
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/actions-hosted-runner"
+              examples:
+                default:
+                  "$ref": "#/components/examples/actions-hosted-runner"
+      x-github:
+        enabledForGitHubApps: true
+        githubCloudOnly: false
+        category: actions
+        subcategory: hosted-runners
+    delete:
+      summary: Delete a GitHub-hosted runner for an organization
+      description: Deletes a GitHub-hosted runner for an organization.
+      operationId: actions/delete-hosted-runner-for-org
+      tags:
+      - actions
+      externalDocs:
+        description: API method documentation
+        url: https://docs.github.com/rest/actions/hosted-runners#delete-a-github-hosted-runner-for-an-organization
+      parameters:
+      - "$ref": "#/components/parameters/org"
+      - "$ref": "#/components/parameters/hosted-runner-id"
+      responses:
+        '202':
+          description: Response
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/actions-hosted-runner"
+              examples:
+                default:
+                  "$ref": "#/components/examples/actions-hosted-runner"
+      x-github:
+        githubCloudOnly: false
+        enabledForGitHubApps: false
+        category: actions
+        subcategory: hosted-runners
   "/orgs/{org}/actions/oidc/customization/sub":
     get:
       summary: Get the customization template for an OIDC subject claim for an organization
@@ -5289,6 +5742,9 @@ paths:
                       to run. Note that a ref, tag, or long SHA is required.
                     examples:
                     - octo-org/octo-repo/.github/workflows/deploy.yaml@main
+                network_configuration_id:
+                  description: The identifier of a hosted compute network configuration.
+                  type: string
               required:
               - name
             examples:
@@ -5401,6 +5857,11 @@ paths:
                       to run. Note that a ref, tag, or long SHA is required.
                     examples:
                     - octo-org/octo-repo/.github/workflows/deploy.yaml@main
+                network_configuration_id:
+                  description: The identifier of a hosted compute network configuration.
+                  type:
+                  - string
+                  - 'null'
               required:
               - name
             examples:
@@ -5441,6 +5902,52 @@ paths:
       responses:
         '204':
           description: Response
+      x-github:
+        enabledForGitHubApps: true
+        githubCloudOnly: false
+        category: actions
+        subcategory: self-hosted-runner-groups
+  "/orgs/{org}/actions/runner-groups/{runner_group_id}/hosted-runners":
+    get:
+      summary: List GitHub-hosted runners in a group for an organization
+      description: |-
+        Lists the GitHub-hosted runners in an organization group.
+
+        OAuth app tokens and personal access tokens (classic) need the `admin:org` scope to use this endpoint.
+      operationId: actions/list-github-hosted-runners-in-group-for-org
+      tags:
+      - actions
+      externalDocs:
+        description: API method documentation
+        url: https://docs.github.com/rest/actions/self-hosted-runner-groups#list-github-hosted-runners-in-a-group-for-an-organization
+      parameters:
+      - "$ref": "#/components/parameters/org"
+      - "$ref": "#/components/parameters/runner-group-id"
+      - "$ref": "#/components/parameters/per-page"
+      - "$ref": "#/components/parameters/page"
+      responses:
+        '200':
+          description: Response
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - total_count
+                - runners
+                properties:
+                  total_count:
+                    type: number
+                  runners:
+                    type: array
+                    items:
+                      "$ref": "#/components/schemas/actions-hosted-runner"
+              examples:
+                default:
+                  "$ref": "#/components/examples/actions-hosted-runner-paginated"
+          headers:
+            Link:
+              "$ref": "#/components/headers/link"
       x-github:
         enabledForGitHubApps: true
         githubCloudOnly: false
@@ -67413,6 +67920,72 @@ components:
           type: array
           items:
             type: string
+    enterprise:
+      title: Enterprise
+      description: An enterprise on GitHub.
+      type: object
+      properties:
+        description:
+          description: A short description of the enterprise.
+          type:
+          - string
+          - 'null'
+        html_url:
+          type: string
+          format: uri
+          examples:
+          - https://github.com/enterprises/octo-business
+        website_url:
+          description: The enterprise's website URL.
+          type:
+          - string
+          - 'null'
+          format: uri
+        id:
+          description: Unique identifier of the enterprise
+          type: integer
+          examples:
+          - 42
+        node_id:
+          type: string
+          examples:
+          - MDEwOlJlcG9zaXRvcnkxMjk2MjY5
+        name:
+          description: The name of the enterprise.
+          type: string
+          examples:
+          - Octo Business
+        slug:
+          description: The slug url identifier for the enterprise.
+          type: string
+          examples:
+          - octo-business
+        created_at:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          examples:
+          - '2019-01-26T19:01:12Z'
+        updated_at:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          examples:
+          - '2019-01-26T19:14:43Z'
+        avatar_url:
+          type: string
+          format: uri
+      required:
+      - id
+      - node_id
+      - name
+      - slug
+      - html_url
+      - created_at
+      - updated_at
+      - avatar_url
     integration:
       title: GitHub app
       description: GitHub apps are a new way to extend GitHub. They can be installed
@@ -67442,9 +68015,9 @@ components:
           examples:
           - '"Iv1.25b5d1e65ffc4022"'
         owner:
-          anyOf:
-          - type: 'null'
+          oneOf:
           - "$ref": "#/components/schemas/simple-user"
+          - "$ref": "#/components/schemas/enterprise"
         name:
           description: The name of the GitHub app
           type: string
@@ -67867,72 +68440,6 @@ components:
       - repository_id
       - request
       - response
-    enterprise:
-      title: Enterprise
-      description: An enterprise on GitHub.
-      type: object
-      properties:
-        description:
-          description: A short description of the enterprise.
-          type:
-          - string
-          - 'null'
-        html_url:
-          type: string
-          format: uri
-          examples:
-          - https://github.com/enterprises/octo-business
-        website_url:
-          description: The enterprise's website URL.
-          type:
-          - string
-          - 'null'
-          format: uri
-        id:
-          description: Unique identifier of the enterprise
-          type: integer
-          examples:
-          - 42
-        node_id:
-          type: string
-          examples:
-          - MDEwOlJlcG9zaXRvcnkxMjk2MjY5
-        name:
-          description: The name of the enterprise.
-          type: string
-          examples:
-          - Octo Business
-        slug:
-          description: The slug url identifier for the enterprise.
-          type: string
-          examples:
-          - octo-business
-        created_at:
-          type:
-          - string
-          - 'null'
-          format: date-time
-          examples:
-          - '2019-01-26T19:01:12Z'
-        updated_at:
-          type:
-          - string
-          - 'null'
-          format: date-time
-          examples:
-          - '2019-01-26T19:14:43Z'
-        avatar_url:
-          type: string
-          format: uri
-      required:
-      - id
-      - node_id
-      - name
-      - slug
-      - html_url
-      - created_at
-      - updated_at
-      - avatar_url
     integration-installation-request:
       title: Integration Installation Request
       description: Request to install an integration on a target
@@ -73557,6 +74064,237 @@ components:
       - full_name
       - active_caches_size_in_bytes
       - active_caches_count
+    actions-hosted-runner-pool-image:
+      title: GitHub-hosted runner image details.
+      description: Provides details of a hosted runner image
+      type: object
+      properties:
+        id:
+          description: The ID of the image. Use this ID for the `image` parameter
+            when creating a new larger runner.
+          type: string
+          examples:
+          - ubuntu-20.04
+        size_gb:
+          description: Image size in GB.
+          type: integer
+          examples:
+          - 86
+        display_name:
+          description: Display name for this image.
+          type: string
+          examples:
+          - 20.04
+        source:
+          description: The image provider.
+          type: string
+          enum:
+          - github
+          - partner
+          - custom
+        version:
+          description: The image version of the hosted runner pool.
+          type: string
+          examples:
+          - latest
+      required:
+      - id
+      - size_gb
+      - display_name
+      - source
+      - version
+    actions-hosted-runner-machine-spec:
+      title: Github-owned VM details.
+      description: Provides details of a particular machine spec.
+      type: object
+      properties:
+        id:
+          description: The ID used for the `size` parameter when creating a new runner.
+          type: string
+          examples:
+          - 8-core
+        cpu_cores:
+          description: The number of cores.
+          type: integer
+          examples:
+          - 8
+        memory_gb:
+          description: The available RAM for the machine spec.
+          type: integer
+          examples:
+          - 32
+        storage_gb:
+          description: The available SSD storage for the machine spec.
+          type: integer
+          examples:
+          - 300
+      required:
+      - id
+      - cpu_cores
+      - memory_gb
+      - storage_gb
+    public-ip:
+      title: Public IP for a GitHub-hosted larger runners.
+      description: Provides details of Public IP for a GitHub-hosted larger runners
+      type: object
+      properties:
+        enabled:
+          description: Whether public IP is enabled.
+          type: boolean
+          examples:
+          - true
+        prefix:
+          description: The prefix for the public IP.
+          type: string
+          examples:
+          - 20.80.208.150
+        length:
+          description: The length of the IP prefix.
+          type: integer
+          examples:
+          - 28
+    actions-hosted-runner:
+      title: GitHub-hosted hosted runner
+      description: A Github-hosted hosted runner.
+      type: object
+      properties:
+        id:
+          description: The unique identifier of the hosted runner.
+          type: integer
+          examples:
+          - 5
+        name:
+          description: The name of the hosted runner.
+          type: string
+          examples:
+          - my-github-hosted-runner
+        runner_group_id:
+          description: The unique identifier of the group that the hosted runner belongs
+            to.
+          type: integer
+          examples:
+          - 2
+        image_details:
+          anyOf:
+          - type: 'null'
+          - "$ref": "#/components/schemas/actions-hosted-runner-pool-image"
+        machine_size_details:
+          "$ref": "#/components/schemas/actions-hosted-runner-machine-spec"
+        status:
+          description: The status of the runner.
+          type: string
+          enum:
+          - Ready
+          - Provisioning
+          - Shutdown
+          - Deleting
+          - Stuck
+          examples:
+          - Ready
+        platform:
+          description: The operating system of the image.
+          type: string
+          examples:
+          - linux-x64
+        maximum_runners:
+          description: The maximum amount of hosted runners. Runners will not scale
+            automatically above this number. Use this setting to limit your cost.
+          type: integer
+          default: 10
+          examples:
+          - 5
+        public_ip_enabled:
+          description: Whether public IP is enabled for the hosted runners.
+          type: boolean
+          examples:
+          - true
+        public_ips:
+          description: The public IP ranges when public IP is enabled for the hosted
+            runners.
+          type: array
+          items:
+            "$ref": "#/components/schemas/public-ip"
+        last_active_on:
+          description: The time at which the runner was last used, in ISO 8601 format.
+          type:
+          - string
+          - 'null'
+          format: date-time
+          examples:
+          - '2022-10-09T23:39:01Z'
+      required:
+      - id
+      - name
+      - image_details
+      - machine_size_details
+      - status
+      - public_ip_enabled
+      - platform
+    actions-hosted-runner-image:
+      title: GitHub-hosted runner image details.
+      description: Provides details of a hosted runner image
+      type: object
+      properties:
+        id:
+          description: The ID of the image. Use this ID for the `image` parameter
+            when creating a new larger runner.
+          type: string
+          examples:
+          - ubuntu-20.04
+        platform:
+          description: The operating system of the image.
+          type: string
+          examples:
+          - linux-x64
+        size_gb:
+          description: Image size in GB.
+          type: integer
+          examples:
+          - 86
+        display_name:
+          description: Display name for this image.
+          type: string
+          examples:
+          - 20.04
+        source:
+          description: The image provider.
+          type: string
+          enum:
+          - github
+          - partner
+          - custom
+      required:
+      - id
+      - platform
+      - size_gb
+      - display_name
+      - source
+    actions-hosted-runner-limits:
+      type: object
+      properties:
+        public_ips:
+          title: Static public IP Limits for GitHub-hosted Hosted Runners.
+          description: Provides details of static public IP limits for GitHub-hosted
+            Hosted Runners
+          type: object
+          properties:
+            maximum:
+              type: integer
+              description: The maximum number of static public IP addresses that can
+                be used for Hosted Runners.
+              examples:
+              - 50
+            current_usage:
+              type: integer
+              description: The current number of static public IP addresses in use
+                by Hosted Runners.
+              examples:
+              - 17
+          required:
+          - maximum
+          - current_usage
+      required:
+      - public_ips
     oidc-custom-sub:
       title: Actions OIDC Subject customization
       description: Actions OIDC Subject customization
@@ -73679,6 +74417,9 @@ components:
         runners_url:
           type: string
         hosted_runners_url:
+          type: string
+        network_configuration_id:
+          description: The identifier of a hosted compute network configuration.
           type: string
         inherited:
           type: boolean
@@ -205733,6 +206474,87 @@ components:
         - full_name: octo-org/server
           active_caches_size_in_bytes: 1022142
           active_caches_count: 2
+    actions-hosted-runner-paginated:
+      value:
+        total_count: 2
+        runners:
+        - id: 5
+          name: My hosted ubuntu runner
+          runner_group_id: 2
+          platform: linux-x64
+          image:
+            id: ubuntu-20.04
+            size: 86
+          machine_size_details:
+            id: 4-core
+            cpu_cores: 4
+            memory_gb: 16
+            storage_gb: 150
+          status: Ready
+          maximum_runners: 10
+          public_ip_enabled: true
+          public_ips:
+          - enabled: true
+            prefix: 20.80.208.150
+            length: 31
+          last_active_on: '2022-10-09T23:39:01Z'
+        - id: 7
+          name: My hosted Windows runner
+          runner_group_id: 2
+          platform: win-x64
+          image:
+            id: windows-latest
+            size: 256
+          machine_size_details:
+            id: 8-core
+            cpu_cores: 8
+            memory_gb: 32
+            storage_gb: 300
+          status: Ready
+          maximum_runners: 20
+          public_ip_enabled: false
+          public_ips: []
+          last_active_on: '2023-04-26T15:23:37Z'
+    actions-hosted-runner:
+      value:
+        id: 5
+        name: My hosted ubuntu runner
+        runner_group_id: 2
+        platform: linux-x64
+        image:
+          id: ubuntu-20.04
+          size: 86
+        machine_size_details:
+          id: 4-core
+          cpu_cores: 4
+          memory_gb: 16
+          storage_gb: 150
+        status: Ready
+        maximum_runners: 10
+        public_ip_enabled: true
+        public_ips:
+        - enabled: true
+          prefix: 20.80.208.150
+          length: 31
+        last_active_on: '2022-10-09T23:39:01Z'
+    actions-hosted-runner-image:
+      value:
+        id: ubuntu-20.04
+        platform: linux-x64
+        size_gb: 86
+        display_name: '20.04'
+        source: github
+    actions-hosted-runner-limits-default:
+      value:
+        public_ips:
+          current_usage: 17
+          maximum: 50
+    actions-hosted-runner-machine-spec:
+      value:
+        id: 4-core
+        cpu_cores: 4
+        memory_gb: 16
+        storage_gb: 150
     oidc-custom-sub:
       value:
         include_claim_keys:
@@ -228190,6 +229012,13 @@ components:
         of `hour` is an integer between `0` and `23`.
       in: query
       required: false
+      schema:
+        type: integer
+    hosted-runner-id:
+      name: hosted_runner_id
+      description: Unique identifier of the GitHub-hosted runner.
+      in: path
+      required: true
       schema:
         type: integer
     repository-id:
