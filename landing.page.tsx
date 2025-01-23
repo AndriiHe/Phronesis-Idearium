@@ -22,7 +22,7 @@ export default function () {
     <LandingWrapper>
       <Jumbotron
         p="130px 180px 130px 180px"
-        bgImage={require('images/hero-bg.png')}
+        // bgImage={require('images/hero-bg.png')}
       >
         <LandingHeader>Redocly training</LandingHeader>
         <LandingSubheader>A starter developer portal with training exercises</LandingSubheader>
