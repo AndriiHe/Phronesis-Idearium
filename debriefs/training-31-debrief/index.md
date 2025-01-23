@@ -10,3 +10,5 @@ Strange `welcome to Reunite` banner
 ![Screenshot 2025-01-23 at 11.53.02.png](./images/Screenshot%202025-01-23%20at%2011.53.02.png)
 Error screen looks weird
 ![Screenshot 2025-01-23 at 11.59.02.png](./images/Screenshot%202025-01-23%20at%2011.59.02.png)
+Github icon lack of contrast
+![Screenshot 2025-01-23 at 12.04.31.png](./images/Screenshot%202025-01-23%20at%2012.04.31.png)
