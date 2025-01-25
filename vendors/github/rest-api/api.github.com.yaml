@@ -15554,7 +15554,7 @@ paths:
       operationId: hosted-compute/list-network-configurations-for-org
       externalDocs:
         description: API method documentation
-        url: https://docs.github.com/rest/settings/network-configurations#list-hosted-compute-network-configurations-for-an-organization
+        url: https://docs.github.com/rest/orgs/network-configurations#list-hosted-compute-network-configurations-for-an-organization
       parameters:
       - "$ref": "#/components/parameters/org"
       - "$ref": "#/components/parameters/per-page"
@@ -15585,7 +15585,7 @@ paths:
       x-github:
         githubCloudOnly: false
         enabledForGitHubApps: true
-        category: settings
+        category: orgs
         subcategory: network-configurations
     post:
       summary: Create a hosted compute network configuration for an organization
@@ -15598,7 +15598,7 @@ paths:
       operationId: hosted-compute/create-network-configuration-for-org
       externalDocs:
         description: API method documentation
-        url: https://docs.github.com/rest/settings/network-configurations#create-a-hosted-compute-network-configuration-for-an-organization
+        url: https://docs.github.com/rest/orgs/network-configurations#create-a-hosted-compute-network-configuration-for-an-organization
       parameters:
       - "$ref": "#/components/parameters/org"
       requestBody:
@@ -15650,7 +15650,7 @@ paths:
       x-github:
         githubCloudOnly: false
         enabledForGitHubApps: true
-        category: settings
+        category: orgs
         subcategory: network-configurations
   "/orgs/{org}/settings/network-configurations/{network_configuration_id}":
     get:
@@ -15664,7 +15664,7 @@ paths:
       operationId: hosted-compute/get-network-configuration-for-org
       externalDocs:
         description: API method documentation
-        url: https://docs.github.com/rest/settings/network-configurations#get-a-hosted-compute-network-configuration-for-an-organization
+        url: https://docs.github.com/rest/orgs/network-configurations#get-a-hosted-compute-network-configuration-for-an-organization
       parameters:
       - "$ref": "#/components/parameters/org"
       - "$ref": "#/components/parameters/network-configuration-id"
@@ -15684,7 +15684,7 @@ paths:
       x-github:
         githubCloudOnly: false
         enabledForGitHubApps: true
-        category: settings
+        category: orgs
         subcategory: network-configurations
     patch:
       summary: Update a hosted compute network configuration for an organization
@@ -15697,7 +15697,7 @@ paths:
       operationId: hosted-compute/update-network-configuration-for-org
       externalDocs:
         description: API method documentation
-        url: https://docs.github.com/rest/settings/network-configurations#update-a-hosted-compute-network-configuration-for-an-organization
+        url: https://docs.github.com/rest/orgs/network-configurations#update-a-hosted-compute-network-configuration-for-an-organization
       parameters:
       - "$ref": "#/components/parameters/org"
       - "$ref": "#/components/parameters/network-configuration-id"
@@ -15747,7 +15747,7 @@ paths:
       x-github:
         githubCloudOnly: false
         enabledForGitHubApps: true
-        category: settings
+        category: orgs
         subcategory: network-configurations
     delete:
       summary: Delete a hosted compute network configuration from an organization
@@ -15760,7 +15760,7 @@ paths:
       operationId: hosted-compute/delete-network-configuration-from-org
       externalDocs:
         description: API method documentation
-        url: https://docs.github.com/rest/settings/network-configurations#delete-a-hosted-compute-network-configuration-from-an-organization
+        url: https://docs.github.com/rest/orgs/network-configurations#delete-a-hosted-compute-network-configuration-from-an-organization
       parameters:
       - "$ref": "#/components/parameters/org"
       - "$ref": "#/components/parameters/network-configuration-id"
@@ -15770,7 +15770,7 @@ paths:
       x-github:
         githubCloudOnly: false
         enabledForGitHubApps: true
-        category: settings
+        category: orgs
         subcategory: network-configurations
   "/orgs/{org}/settings/network-settings/{network_settings_id}":
     get:
@@ -15784,7 +15784,7 @@ paths:
       operationId: hosted-compute/get-network-settings-for-org
       externalDocs:
         description: API method documentation
-        url: https://docs.github.com/rest/settings/network-configurations#get-a-hosted-compute-network-settings-resource-for-an-organization
+        url: https://docs.github.com/rest/orgs/network-configurations#get-a-hosted-compute-network-settings-resource-for-an-organization
       parameters:
       - "$ref": "#/components/parameters/org"
       - "$ref": "#/components/parameters/network-settings-id"
@@ -15804,7 +15804,7 @@ paths:
       x-github:
         githubCloudOnly: false
         enabledForGitHubApps: true
-        category: settings
+        category: orgs
         subcategory: network-configurations
   "/orgs/{org}/team/{team_slug}/copilot/metrics":
     get:
@@ -67803,6 +67803,22 @@ components:
           required:
           - vector_string
           - score
+    security-advisory-epss:
+      type:
+      - object
+      - 'null'
+      readOnly: true
+      description: The EPSS scores as calculated by the [Exploit Prediction Scoring
+        System](https://www.first.org/epss).
+      properties:
+        percentage:
+          type: number
+          minimum: 0
+          maximum: 100
+        percentile:
+          type: number
+          minimum: 0
+          maximum: 100
     simple-user:
       title: Simple User
       description: A GitHub user.
@@ -68096,6 +68112,8 @@ components:
           - score
         cvss_severities:
           "$ref": "#/components/schemas/cvss-severities"
+        epss:
+          "$ref": "#/components/schemas/security-advisory-epss"
         cwes:
           type:
           - array
@@ -68113,15 +68131,6 @@ components:
             required:
             - cwe_id
             - name
-        epss:
-          type:
-          - object
-          - 'null'
-          properties:
-            percentage:
-              type: number
-            percentile:
-              type: number
         credits:
           type:
           - array
@@ -71229,6 +71238,8 @@ components:
           additionalProperties: false
         cvss_severities:
           "$ref": "#/components/schemas/cvss-severities"
+        epss:
+          "$ref": "#/components/schemas/security-advisory-epss"
         cwes:
           type: array
           description: Details for the advisory pertaining to Common Weakness Enumeration.
@@ -204828,6 +204839,9 @@ components:
             cvss_v4:
               vector_string: CVSS:4.0/AV:N/AC:L/AT:N/PR:N/UI:N/VC:H/VI:N/VA:N/SC:N/SI:N/SA:N
               score: 8.7
+          epss:
+          - percentage: 0.00045
+            percentile: 0.16001e0
           cwes:
           - cwe_id: CWE-200
             name: Exposure of Sensitive Information to an Unauthorized Actor
@@ -217945,6 +217959,9 @@ components:
             cvss_v4:
               vector_string: CVSS:4.0/AV:N/AC:L/AT:N/PR:N/UI:N/VC:H/VI:N/VA:N/SC:N/SI:N/SA:N
               score: 8.7
+          epss:
+          - percentage: 0.00045
+            percentile: 0.16001e0
           cwes:
           - cwe_id: CWE-200
             name: Exposure of Sensitive Information to an Unauthorized Actor
@@ -218131,6 +218148,9 @@ components:
             cvss_v4:
               vector_string: CVSS:4.0/AV:L/AC:L/AT:N/PR:N/UI:P/VC:H/VI:H/VA:H/SC:N/SI:N/SA:N
               score: 8.5
+          epss:
+          - percentage: 0.00045
+            percentile: 0.16001e0
           cwes:
           - cwe_id: CWE-532
             name: Insertion of Sensitive Information into Log File
