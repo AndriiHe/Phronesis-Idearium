@@ -6887,6 +6887,8 @@ paths:
                   items:
                     type: integer
               required:
+              - encrypted_value
+              - key_id
               - visibility
             examples:
               default:
@@ -14023,10 +14025,10 @@ paths:
   "/orgs/{org}/projects":
     get:
       summary: List organization projects
-      description: Lists the projects in an organization. Returns a `404 Not Found`
-        status if projects are disabled in the organization. If you do not have sufficient
-        privileges to perform this action, a `401 Unauthorized` or `410 Gone` status
-        is returned.
+      description: |-
+        > [!WARNING]
+        > **Closing down notice:** Projects (classic) is being deprecated in favor of the new Projects experience.
+        > See the [changelog](https://github.blog/changelog/2024-05-23-sunset-notice-projects-classic/) for more information.
       tags:
       - projects
       operationId: projects/list-for-org
@@ -14070,12 +14072,15 @@ paths:
         enabledForGitHubApps: true
         category: projects
         subcategory: projects
+        deprecationDate: '2024-05-23'
+        removalDate: '2025-04-01'
+      deprecated: true
     post:
       summary: Create an organization project
-      description: Creates an organization project board. Returns a `410 Gone` status
-        if projects are disabled in the organization or if the organization does not
-        have existing classic projects. If you do not have sufficient privileges to
-        perform this action, a `401 Unauthorized` or `410 Gone` status is returned.
+      description: |-
+        > [!WARNING]
+        > **Closing down notice:** Projects (classic) is being deprecated in favor of the new Projects experience.
+        > See the [changelog](https://github.blog/changelog/2024-05-23-sunset-notice-projects-classic/) for more information.
       tags:
       - projects
       operationId: projects/create-for-org
@@ -14129,6 +14134,9 @@ paths:
         enabledForGitHubApps: true
         category: projects
         subcategory: projects
+        deprecationDate: '2024-05-23'
+        removalDate: '2025-04-01'
+      deprecated: true
   "/orgs/{org}/properties/schema":
     get:
       summary: Get all custom properties for an organization
@@ -17665,7 +17673,10 @@ paths:
   "/projects/columns/cards/{card_id}":
     get:
       summary: Get a project card
-      description: Gets information about a project card.
+      description: |-
+        > [!WARNING]
+        > **Closing down notice:** Projects (classic) is being deprecated in favor of the new Projects experience.
+        > See the [changelog](https://github.blog/changelog/2024-05-23-sunset-notice-projects-classic/) for more information.
       tags:
       - projects
       operationId: projects/get-card
@@ -17697,9 +17708,15 @@ paths:
         enabledForGitHubApps: true
         category: projects
         subcategory: cards
+        deprecationDate: '2024-05-23'
+        removalDate: '2025-04-01'
+      deprecated: true
     patch:
       summary: Update an existing project card
-      description: ''
+      description: |-
+        > [!WARNING]
+        > **Closing down notice:** Projects (classic) is being deprecated in favor of the new Projects experience.
+        > See the [changelog](https://github.blog/changelog/2024-05-23-sunset-notice-projects-classic/) for more information.
       tags:
       - projects
       operationId: projects/update-card
@@ -17757,9 +17774,15 @@ paths:
         enabledForGitHubApps: true
         category: projects
         subcategory: cards
+        deprecationDate: '2024-05-23'
+        removalDate: '2025-04-01'
+      deprecated: true
     delete:
       summary: Delete a project card
-      description: Deletes a project card
+      description: |-
+        > [!WARNING]
+        > **Closing down notice:** Projects (classic) is being deprecated in favor of the new Projects experience.
+        > See the [changelog](https://github.blog/changelog/2024-05-23-sunset-notice-projects-classic/) for more information.
       tags:
       - projects
       operationId: projects/delete-card
@@ -17797,10 +17820,16 @@ paths:
         enabledForGitHubApps: true
         category: projects
         subcategory: cards
+        deprecationDate: '2024-05-23'
+        removalDate: '2025-04-01'
+      deprecated: true
   "/projects/columns/cards/{card_id}/moves":
     post:
       summary: Move a project card
-      description: ''
+      description: |-
+        > [!WARNING]
+        > **Closing down notice:** Projects (classic) is being deprecated in favor of the new Projects experience.
+        > See the [changelog](https://github.blog/changelog/2024-05-23-sunset-notice-projects-classic/) for more information.
       tags:
       - projects
       operationId: projects/move-card
@@ -17907,10 +17936,16 @@ paths:
         enabledForGitHubApps: true
         category: projects
         subcategory: cards
+        deprecationDate: '2024-05-23'
+        removalDate: '2025-04-01'
+      deprecated: true
   "/projects/columns/{column_id}":
     get:
       summary: Get a project column
-      description: Gets information about a project column.
+      description: |-
+        > [!WARNING]
+        > **Closing down notice:** Projects (classic) is being deprecated in favor of the new Projects experience.
+        > See the [changelog](https://github.blog/changelog/2024-05-23-sunset-notice-projects-classic/) for more information.
       tags:
       - projects
       operationId: projects/get-column
@@ -17942,9 +17977,15 @@ paths:
         enabledForGitHubApps: true
         category: projects
         subcategory: columns
+        deprecationDate: '2024-05-23'
+        removalDate: '2025-04-01'
+      deprecated: true
     patch:
       summary: Update an existing project column
-      description: ''
+      description: |-
+        > [!WARNING]
+        > **Closing down notice:** Projects (classic) is being deprecated in favor of the new Projects experience.
+        > See the [changelog](https://github.blog/changelog/2024-05-23-sunset-notice-projects-classic/) for more information.
       tags:
       - projects
       operationId: projects/update-column
@@ -17993,9 +18034,15 @@ paths:
         enabledForGitHubApps: true
         category: projects
         subcategory: columns
+        deprecationDate: '2024-05-23'
+        removalDate: '2025-04-01'
+      deprecated: true
     delete:
       summary: Delete a project column
-      description: Deletes a project column.
+      description: |-
+        > [!WARNING]
+        > **Closing down notice:** Projects (classic) is being deprecated in favor of the new Projects experience.
+        > See the [changelog](https://github.blog/changelog/2024-05-23-sunset-notice-projects-classic/) for more information.
       tags:
       - projects
       operationId: projects/delete-column
@@ -18018,10 +18065,16 @@ paths:
         enabledForGitHubApps: true
         category: projects
         subcategory: columns
+        deprecationDate: '2024-05-23'
+        removalDate: '2025-04-01'
+      deprecated: true
   "/projects/columns/{column_id}/cards":
     get:
       summary: List project cards
-      description: Lists the project cards in a project.
+      description: |-
+        > [!WARNING]
+        > **Closing down notice:** Projects (classic) is being deprecated in favor of the new Projects experience.
+        > See the [changelog](https://github.blog/changelog/2024-05-23-sunset-notice-projects-classic/) for more information.
       tags:
       - projects
       operationId: projects/list-cards
@@ -18069,9 +18122,15 @@ paths:
         enabledForGitHubApps: true
         category: projects
         subcategory: cards
+        deprecationDate: '2024-05-23'
+        removalDate: '2025-04-01'
+      deprecated: true
     post:
       summary: Create a project card
-      description: ''
+      description: |-
+        > [!WARNING]
+        > **Closing down notice:** Projects (classic) is being deprecated in favor of the new Projects experience.
+        > See the [changelog](https://github.blog/changelog/2024-05-23-sunset-notice-projects-classic/) for more information.
       tags:
       - projects
       operationId: projects/create-card
@@ -18169,10 +18228,16 @@ paths:
         enabledForGitHubApps: true
         category: projects
         subcategory: cards
+        deprecationDate: '2024-05-23'
+        removalDate: '2025-04-01'
+      deprecated: true
   "/projects/columns/{column_id}/moves":
     post:
       summary: Move a project column
-      description: ''
+      description: |-
+        > [!WARNING]
+        > **Closing down notice:** Projects (classic) is being deprecated in favor of the new Projects experience.
+        > See the [changelog](https://github.blog/changelog/2024-05-23-sunset-notice-projects-classic/) for more information.
       tags:
       - projects
       operationId: projects/move-column
@@ -18228,12 +18293,16 @@ paths:
         enabledForGitHubApps: true
         category: projects
         subcategory: columns
+        deprecationDate: '2024-05-23'
+        removalDate: '2025-04-01'
+      deprecated: true
   "/projects/{project_id}":
     get:
       summary: Get a project
-      description: Gets a project by its `id`. Returns a `404 Not Found` status if
-        projects are disabled. If you do not have sufficient privileges to perform
-        this action, a `401 Unauthorized` or `410 Gone` status is returned.
+      description: |-
+        > [!WARNING]
+        > **Closing down notice:** Projects (classic) is being deprecated in favor of the new Projects experience.
+        > See the [changelog](https://github.blog/changelog/2024-05-23-sunset-notice-projects-classic/) for more information.
       tags:
       - projects
       operationId: projects/get
@@ -18263,11 +18332,15 @@ paths:
         enabledForGitHubApps: true
         category: projects
         subcategory: projects
+        deprecationDate: '2024-05-23'
+        removalDate: '2025-04-01'
+      deprecated: true
     patch:
       summary: Update a project
-      description: Updates a project board's information. Returns a `404 Not Found`
-        status if projects are disabled. If you do not have sufficient privileges
-        to perform this action, a `401 Unauthorized` or `410 Gone` status is returned.
+      description: |-
+        > [!WARNING]
+        > **Closing down notice:** Projects (classic) is being deprecated in favor of the new Projects experience.
+        > See the [changelog](https://github.blog/changelog/2024-05-23-sunset-notice-projects-classic/) for more information.
       operationId: projects/update
       tags:
       - projects
@@ -18360,10 +18433,15 @@ paths:
         enabledForGitHubApps: true
         category: projects
         subcategory: projects
+        deprecationDate: '2024-05-23'
+        removalDate: '2025-04-01'
+      deprecated: true
     delete:
       summary: Delete a project
-      description: Deletes a project board. Returns a `404 Not Found` status if projects
-        are disabled.
+      description: |-
+        > [!WARNING]
+        > **Closing down notice:** Projects (classic) is being deprecated in favor of the new Projects experience.
+        > See the [changelog](https://github.blog/changelog/2024-05-23-sunset-notice-projects-classic/) for more information.
       operationId: projects/delete
       tags:
       - projects
@@ -18403,15 +18481,16 @@ paths:
         enabledForGitHubApps: true
         category: projects
         subcategory: projects
+        deprecationDate: '2024-05-23'
+        removalDate: '2025-04-01'
+      deprecated: true
   "/projects/{project_id}/collaborators":
     get:
       summary: List project collaborators
-      description: Lists the collaborators for an organization project. For a project,
-        the list of collaborators includes outside collaborators, organization members
-        that are direct collaborators, organization members with access through team
-        memberships, organization members with access through default organization
-        permissions, and organization owners. You must be an organization owner or
-        a project `admin` to list collaborators.
+      description: |-
+        > [!WARNING]
+        > **Closing down notice:** Projects (classic) is being deprecated in favor of the new Projects experience.
+        > See the [changelog](https://github.blog/changelog/2024-05-23-sunset-notice-projects-classic/) for more information.
       tags:
       - projects
       operationId: projects/list-collaborators
@@ -18467,11 +18546,16 @@ paths:
         enabledForGitHubApps: true
         category: projects
         subcategory: collaborators
+        deprecationDate: '2024-05-23'
+        removalDate: '2025-04-01'
+      deprecated: true
   "/projects/{project_id}/collaborators/{username}":
     put:
       summary: Add project collaborator
-      description: Adds a collaborator to an organization project and sets their permission
-        level. You must be an organization owner or a project `admin` to add a collaborator.
+      description: |-
+        > [!WARNING]
+        > **Closing down notice:** Projects (classic) is being deprecated in favor of the new Projects experience.
+        > See the [changelog](https://github.blog/changelog/2024-05-23-sunset-notice-projects-classic/) for more information.
       tags:
       - projects
       operationId: projects/add-collaborator
@@ -18523,10 +18607,15 @@ paths:
         enabledForGitHubApps: true
         category: projects
         subcategory: collaborators
+        deprecationDate: '2024-05-23'
+        removalDate: '2025-04-01'
+      deprecated: true
     delete:
       summary: Remove user as a collaborator
-      description: Removes a collaborator from an organization project. You must be
-        an organization owner or a project `admin` to remove a collaborator.
+      description: |-
+        > [!WARNING]
+        > **Closing down notice:** Projects (classic) is being deprecated in favor of the new Projects experience.
+        > See the [changelog](https://github.blog/changelog/2024-05-23-sunset-notice-projects-classic/) for more information.
       tags:
       - projects
       operationId: projects/remove-collaborator
@@ -18554,13 +18643,16 @@ paths:
         enabledForGitHubApps: true
         category: projects
         subcategory: collaborators
+        deprecationDate: '2024-05-23'
+        removalDate: '2025-04-01'
+      deprecated: true
   "/projects/{project_id}/collaborators/{username}/permission":
     get:
       summary: Get project permission for a user
-      description: 'Returns the collaborator''s permission level for an organization
-        project. Possible values for the `permission` key: `admin`, `write`, `read`,
-        `none`. You must be an organization owner or a project `admin` to review a
-        user''s permission level.'
+      description: |-
+        > [!WARNING]
+        > **Closing down notice:** Projects (classic) is being deprecated in favor of the new Projects experience.
+        > See the [changelog](https://github.blog/changelog/2024-05-23-sunset-notice-projects-classic/) for more information.
       tags:
       - projects
       operationId: projects/get-permission-for-user
@@ -18595,10 +18687,16 @@ paths:
         enabledForGitHubApps: true
         category: projects
         subcategory: collaborators
+        deprecationDate: '2024-05-23'
+        removalDate: '2025-04-01'
+      deprecated: true
   "/projects/{project_id}/columns":
     get:
       summary: List project columns
-      description: Lists the project columns in a project.
+      description: |-
+        > [!WARNING]
+        > **Closing down notice:** Projects (classic) is being deprecated in favor of the new Projects experience.
+        > See the [changelog](https://github.blog/changelog/2024-05-23-sunset-notice-projects-classic/) for more information.
       tags:
       - projects
       operationId: projects/list-columns
@@ -18635,9 +18733,15 @@ paths:
         enabledForGitHubApps: true
         category: projects
         subcategory: columns
+        deprecationDate: '2024-05-23'
+        removalDate: '2025-04-01'
+      deprecated: true
     post:
       summary: Create a project column
-      description: Creates a new project column.
+      description: |-
+        > [!WARNING]
+        > **Closing down notice:** Projects (classic) is being deprecated in favor of the new Projects experience.
+        > See the [changelog](https://github.blog/changelog/2024-05-23-sunset-notice-projects-classic/) for more information.
       tags:
       - projects
       operationId: projects/create-column
@@ -18695,6 +18799,9 @@ paths:
         enabledForGitHubApps: true
         category: projects
         subcategory: columns
+        deprecationDate: '2024-05-23'
+        removalDate: '2025-04-01'
+      deprecated: true
   "/rate_limit":
     get:
       summary: Get rate limit status for the authenticated user
@@ -21453,6 +21560,9 @@ paths:
                 key_id:
                   type: string
                   description: ID of the key you used to encrypt the secret.
+              required:
+              - encrypted_value
+              - key_id
             examples:
               default:
                 value:
@@ -37175,10 +37285,10 @@ paths:
   "/repos/{owner}/{repo}/projects":
     get:
       summary: List repository projects
-      description: Lists the projects in a repository. Returns a `404 Not Found` status
-        if projects are disabled in the repository. If you do not have sufficient
-        privileges to perform this action, a `401 Unauthorized` or `410 Gone` status
-        is returned.
+      description: |-
+        > [!WARNING]
+        > **Closing down notice:** Projects (classic) is being deprecated in favor of the new Projects experience.
+        > See the [changelog](https://github.blog/changelog/2024-05-23-sunset-notice-projects-classic/) for more information.
       tags:
       - projects
       operationId: projects/list-for-repo
@@ -37231,12 +37341,15 @@ paths:
         enabledForGitHubApps: true
         category: projects
         subcategory: projects
+        deprecationDate: '2024-05-23'
+        removalDate: '2025-04-01'
+      deprecated: true
     post:
       summary: Create a repository project
-      description: Creates a repository project board. Returns a `410 Gone` status
-        if projects are disabled in the repository or if the repository does not have
-        existing classic projects. If you do not have sufficient privileges to perform
-        this action, a `401 Unauthorized` or `410 Gone` status is returned.
+      description: |-
+        > [!WARNING]
+        > **Closing down notice:** Projects (classic) is being deprecated in favor of the new Projects experience.
+        > See the [changelog](https://github.blog/changelog/2024-05-23-sunset-notice-projects-classic/) for more information.
       tags:
       - projects
       operationId: projects/create-for-repo
@@ -37291,6 +37404,9 @@ paths:
         enabledForGitHubApps: true
         category: projects
         subcategory: projects
+        deprecationDate: '2024-05-23'
+        removalDate: '2025-04-01'
+      deprecated: true
   "/repos/{owner}/{repo}/properties/values":
     get:
       summary: Get all custom property values for a repository
@@ -48237,10 +48353,10 @@ paths:
   "/user/projects":
     post:
       summary: Create a user project
-      description: Creates a user project board. Returns a `410 Gone` status if the
-        user does not have existing classic projects. If you do not have sufficient
-        privileges to perform this action, a `401 Unauthorized` or `410 Gone` status
-        is returned.
+      description: |-
+        > [!WARNING]
+        > **Closing down notice:** Projects (classic) is being deprecated in favor of the new Projects experience.
+        > See the [changelog](https://github.blog/changelog/2024-05-23-sunset-notice-projects-classic/) for more information.
       tags:
       - projects
       operationId: projects/create-for-authenticated-user
@@ -48298,6 +48414,9 @@ paths:
         enabledForGitHubApps: true
         category: projects
         subcategory: projects
+        deprecationDate: '2024-05-23'
+        removalDate: '2025-04-01'
+      deprecated: true
   "/user/public_emails":
     get:
       summary: List public email addresses for the authenticated user
@@ -50303,7 +50422,10 @@ paths:
   "/users/{username}/projects":
     get:
       summary: List user projects
-      description: Lists projects for a user.
+      description: |-
+        > [!WARNING]
+        > **Closing down notice:** Projects (classic) is being deprecated in favor of the new Projects experience.
+        > See the [changelog](https://github.blog/changelog/2024-05-23-sunset-notice-projects-classic/) for more information.
       tags:
       - projects
       operationId: projects/list-for-user
@@ -50347,6 +50469,9 @@ paths:
         enabledForGitHubApps: false
         category: projects
         subcategory: projects
+        deprecationDate: '2024-05-23'
+        removalDate: '2025-04-01'
+      deprecated: true
   "/users/{username}/received_events":
     get:
       summary: List events received by the authenticated user
@@ -83310,6 +83435,7 @@ components:
       - reason
       - payload
       - signature
+      - verified_at
     diff-entry:
       title: Diff Entry
       description: Diff Entry
@@ -87807,6 +87933,7 @@ components:
           - reason
           - signature
           - payload
+          - verified_at
         html_url:
           type: string
           format: uri
@@ -89494,6 +89621,7 @@ components:
           - reason
           - signature
           - payload
+          - verified_at
         html_url:
           type: string
           format: uri
@@ -195076,6 +195204,7 @@ components:
                   - reason
                   - signature
                   - payload
+                  - verified_at
               required:
               - author
               - committer
