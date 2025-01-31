@@ -1949,8 +1949,7 @@ paths:
                 scope:
                   type: string
                   description: The type of repositories to attach the configuration
-                    to. `selected` means the configuration will be attached to only
-                    the repositories specified by `selected_repository_ids`
+                    to.
                   enum:
                   - all
                   - all_without_configurations
@@ -42597,7 +42596,7 @@ paths:
           description: Not Found if repository is not enabled with vulnerability alerts
       x-github:
         githubCloudOnly: false
-        enabledForGitHubApps: false
+        enabledForGitHubApps: true
         category: repos
         subcategory: repos
     put:
