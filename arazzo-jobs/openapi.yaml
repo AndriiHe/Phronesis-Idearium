@@ -1,0 +1,49 @@
+openapi: 3.1.0
+info:
+  title: Currency Exchange API
+  description: Provides currency exchange rates
+  version: 1.0.0
+servers:
+  - url: https://phronesis-currency-api.deno.dev
+    description: Main server
+paths:
+  /exchange-rates:
+    get:
+      operationId: getExchangeRates
+      summary: Retrieve exchange rates
+      description: Get current currency exchange rates.
+      parameters:
+        - name: ApiKey
+          in: header
+          required: true
+          description: API key for authorization
+          schema:
+            type: string
+      responses:
+        '200':
+          description: A JSON object containing exchange rates
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  usdToEur:
+                    type: string
+                    example: '0.85'
+                  eurToUsd:
+                    type: string
+                    example: '1.18'
+        '401':
+          description: Unauthorized request due to invalid API key
+        '404':
+          description: Not Found if the path is incorrect
+        '500':
+          description: Internal Server Error
+components:
+  securitySchemes:
+    ApiKeyAuth:
+      type: apiKey
+      in: header
+      name: ApiKey
+security:
+  - ApiKeyAuth: []
