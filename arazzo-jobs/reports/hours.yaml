@@ -6,9 +6,6 @@ sourceDescriptions:
   - name: mock-api
     type: openapi
     url: ../openapi.yaml
-servers:
-  - url: https://phronesis-currency-api.deno.dev/exchange-rates
-    description: Production server
 workflows:
   - workflowId: getExchangeRatesWorkflow
     summary: Testing Exchange Rates API
