@@ -2,6 +2,18 @@ plugins:
   - plugins/github.js
   - plugins/sparkle.js
 
+reunite:
+  jobs:
+    - path: '/arazzo-jobs/reports/hours.yaml'
+      agent: spot
+      trigger:
+        event: schedule
+        interval: 1m
+      severity:
+        schemaCheck: off
+      inputs:
+        API_KEY: '{{ process.env.API_KEY }}'
+
 apis:
   github-rest-api:
     root: vendors/github/rest-api/api.github.com.yaml
