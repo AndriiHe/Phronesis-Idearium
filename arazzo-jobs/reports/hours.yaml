@@ -1,0 +1,26 @@
+arazzo: 1.0.0
+info:
+  title: Currency exchange API
+  version: 1.0.0
+servers:
+  - url: https://phronesis-currency-api.deno.dev/exchange-rates
+    description: Production server
+workflows:
+  - workflowId: getExchangeRatesWorkflow
+    summary: Testing Exchange Rates API
+    description: Uptime monitoring for Exchange Rates API
+    parameters:
+      - in: header
+        name: ApiKey
+        value: $inputs.API_KEY
+    steps:
+      - stepId: get-exchange-rates
+        operationId: getExchangeRates
+        successCriteria:
+          - condition: $statusCode == 200
+    inputs:
+      type: object
+      properties: 
+        API_KEY:
+          type: string
+          format: password
