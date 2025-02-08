@@ -21325,7 +21325,7 @@ paths:
                   value: 
       x-github:
         githubCloudOnly: false
-        enabledForGitHubApps: false
+        enabledForGitHubApps: true
         category: actions
         subcategory: workflow-runs
   "/repos/{owner}/{repo}/actions/runs/{run_id}/rerun-failed-jobs":
@@ -76258,8 +76258,8 @@ components:
                   properties:
                     name:
                       type: string
-                      description: Name of the model used for Copilot code completion
-                        suggestions. If the default model is used will appear as 'default'.
+                      description: Name of the model used for Copilot Chat. If the
+                        default model is used will appear as 'default'.
                     is_custom_model:
                       type: boolean
                       description: Indicates whether a model is custom or default.
@@ -76305,8 +76305,8 @@ components:
             properties:
               name:
                 type: string
-                description: Name of the model used for Copilot code completion suggestions.
-                  If the default model is used will appear as 'default'.
+                description: Name of the model used for Copilot Chat. If the default
+                  model is used will appear as 'default'.
               is_custom_model:
                 type: boolean
                 description: Indicates whether a model is custom or default.
@@ -76356,8 +76356,8 @@ components:
                   properties:
                     name:
                       type: string
-                      description: Name of the model used for Copilot code completion
-                        suggestions. If the default model is used will appear as 'default'.
+                      description: Name of the model used for Copilot pull request
+                        summaries. If the default model is used will appear as 'default'.
                     is_custom_model:
                       type: boolean
                       description: Indicates whether a model is custom or default.
@@ -79380,7 +79380,7 @@ components:
             - restricted_file_extensions
       - title: max_file_size
         description: Prevent commits that exceed a specified file size limit from
-          being pushed to the commit.
+          being pushed to the commit graph.
         type: object
         required:
         - type
