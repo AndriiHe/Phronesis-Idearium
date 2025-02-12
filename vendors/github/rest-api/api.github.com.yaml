@@ -15240,6 +15240,90 @@ paths:
           "$ref": "#/components/responses/not_found"
         '500':
           "$ref": "#/components/responses/internal_error"
+  "/orgs/{org}/rulesets/{ruleset_id}/history":
+    get:
+      summary: Get organization ruleset history
+      description: Get the history of an organization ruleset.
+      tags:
+      - orgs
+      operationId: orgs/get-org-ruleset-history
+      externalDocs:
+        description: API method documentation
+        url: https://docs.github.com/rest/orgs/rules#get-organization-ruleset-history
+      parameters:
+      - "$ref": "#/components/parameters/org"
+      - "$ref": "#/components/parameters/per-page"
+      - "$ref": "#/components/parameters/page"
+      - name: ruleset_id
+        description: The ID of the ruleset.
+        in: path
+        required: true
+        schema:
+          type: integer
+      responses:
+        '200':
+          description: Response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  "$ref": "#/components/schemas/ruleset-version"
+              examples:
+                default:
+                  "$ref": "#/components/examples/ruleset-history"
+        '404':
+          "$ref": "#/components/responses/not_found"
+        '500':
+          "$ref": "#/components/responses/internal_error"
+      x-github:
+        githubCloudOnly: false
+        enabledForGitHubApps: true
+        category: orgs
+        subcategory: rules
+  "/orgs/{org}/rulesets/{ruleset_id}/history/{version_id}":
+    get:
+      summary: Get organization ruleset version
+      description: Get a version of an organization ruleset.
+      tags:
+      - orgs
+      operationId: orgs/get-org-ruleset-version
+      externalDocs:
+        description: API method documentation
+        url: https://docs.github.com/rest/orgs/rules#get-organization-ruleset-version
+      parameters:
+      - "$ref": "#/components/parameters/org"
+      - name: ruleset_id
+        description: The ID of the ruleset.
+        in: path
+        required: true
+        schema:
+          type: integer
+      - name: version_id
+        description: The ID of the version
+        in: path
+        required: true
+        schema:
+          type: integer
+      responses:
+        '200':
+          description: Response
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ruleset-version-with-state"
+              examples:
+                default:
+                  "$ref": "#/components/examples/org-ruleset-version-with-state"
+        '404':
+          "$ref": "#/components/responses/not_found"
+        '500':
+          "$ref": "#/components/responses/internal_error"
+      x-github:
+        githubCloudOnly: false
+        enabledForGitHubApps: true
+        category: orgs
+        subcategory: rules
   "/orgs/{org}/secret-scanning/alerts":
     get:
       summary: List secret scanning alerts for an organization
@@ -21379,12 +21463,19 @@ paths:
   "/repos/{owner}/{repo}/actions/runs/{run_id}/timing":
     get:
       summary: Get workflow run usage
-      description: |-
-        Gets the number of billable minutes and total run time for a specific workflow run. Billable minutes only apply to workflows in private repositories that use GitHub-hosted runners. Usage is listed for each GitHub-hosted runner operating system in milliseconds. Any job re-runs are also included in the usage. The usage does not include the multiplier for macOS and Windows runners and is not rounded up to the nearest whole minute. For more information, see "[Managing billing for GitHub Actions](https://docs.github.com/github/setting-up-and-managing-billing-and-payments-on-github/managing-billing-for-github-actions)".
-
-        Anyone with read access to the repository can use this endpoint.
-
-        OAuth app tokens and personal access tokens (classic) need the `repo` scope to use this endpoint with a private repository.
+      description: "> [!WARNING]  \n> This endpoint is in the process of closing down.
+        Refer to \"[Actions Get workflow usage and Get workflow run usage endpoints
+        closing down](https://github.blog/changelog/2025-02-02-actions-get-workflow-usage-and-get-workflow-run-usage-endpoints-closing-down/)\"
+        for more information.\n\nGets the number of billable minutes and total run
+        time for a specific workflow run. Billable minutes only apply to workflows
+        in private repositories that use GitHub-hosted runners. Usage is listed for
+        each GitHub-hosted runner operating system in milliseconds. Any job re-runs
+        are also included in the usage. The usage does not include the multiplier
+        for macOS and Windows runners and is not rounded up to the nearest whole minute.
+        For more information, see \"[Managing billing for GitHub Actions](https://docs.github.com/github/setting-up-and-managing-billing-and-payments-on-github/managing-billing-for-github-actions)\".\n\nAnyone
+        with read access to the repository can use this endpoint.\n\nOAuth app tokens
+        and personal access tokens (classic) need the `repo` scope to use this endpoint
+        with a private repository."
       tags:
       - actions
       operationId: actions/get-workflow-run-usage
@@ -22069,14 +22160,20 @@ paths:
   "/repos/{owner}/{repo}/actions/workflows/{workflow_id}/timing":
     get:
       summary: Get workflow usage
-      description: |-
-        Gets the number of billable minutes used by a specific workflow during the current billing cycle. Billable minutes only apply to workflows in private repositories that use GitHub-hosted runners. Usage is listed for each GitHub-hosted runner operating system in milliseconds. Any job re-runs are also included in the usage. The usage does not include the multiplier for macOS and Windows runners and is not rounded up to the nearest whole minute. For more information, see "[Managing billing for GitHub Actions](https://docs.github.com/github/setting-up-and-managing-billing-and-payments-on-github/managing-billing-for-github-actions)".
-
-        You can replace `workflow_id` with the workflow file name. For example, you could use `main.yaml`.
-
-        Anyone with read access to the repository can use this endpoint.
-
-        OAuth app tokens and personal access tokens (classic) need the `repo` scope to use this endpoint with a private repository.
+      description: "> [!WARNING]  \n> This endpoint is in the process of closing down.
+        Refer to \"[Actions Get workflow usage and Get workflow run usage endpoints
+        closing down](https://github.blog/changelog/2025-02-02-actions-get-workflow-usage-and-get-workflow-run-usage-endpoints-closing-down/)\"
+        for more information.\n\nGets the number of billable minutes used by a specific
+        workflow during the current billing cycle. Billable minutes only apply to
+        workflows in private repositories that use GitHub-hosted runners. Usage is
+        listed for each GitHub-hosted runner operating system in milliseconds. Any
+        job re-runs are also included in the usage. The usage does not include the
+        multiplier for macOS and Windows runners and is not rounded up to the nearest
+        whole minute. For more information, see \"[Managing billing for GitHub Actions](https://docs.github.com/github/setting-up-and-managing-billing-and-payments-on-github/managing-billing-for-github-actions)\".\n\nYou
+        can replace `workflow_id` with the workflow file name. For example, you could
+        use `main.yaml`.\n\nAnyone with read access to the repository can use this
+        endpoint.\n\nOAuth app tokens and personal access tokens (classic) need the
+        `repo` scope to use this endpoint with a private repository."
       tags:
       - actions
       operationId: actions/get-workflow-usage
@@ -35352,7 +35449,7 @@ paths:
           "$ref": "#/components/responses/validation_failed"
       x-github:
         githubCloudOnly: false
-        enabledForGitHubApps: false
+        enabledForGitHubApps: true
         category: reactions
         subcategory: reactions
   "/repos/{owner}/{repo}/issues/{issue_number}/reactions/{reaction_id}":
@@ -40832,6 +40929,92 @@ paths:
           "$ref": "#/components/responses/not_found"
         '500':
           "$ref": "#/components/responses/internal_error"
+  "/repos/{owner}/{repo}/rulesets/{ruleset_id}/history":
+    get:
+      summary: Get repository ruleset history
+      description: Get the history of a repository ruleset.
+      tags:
+      - repos
+      operationId: repos/get-repo-ruleset-history
+      externalDocs:
+        description: API method documentation
+        url: https://docs.github.com/rest/repos/rules#get-repository-ruleset-history
+      parameters:
+      - "$ref": "#/components/parameters/owner"
+      - "$ref": "#/components/parameters/repo"
+      - "$ref": "#/components/parameters/per-page"
+      - "$ref": "#/components/parameters/page"
+      - name: ruleset_id
+        description: The ID of the ruleset.
+        in: path
+        required: true
+        schema:
+          type: integer
+      responses:
+        '200':
+          description: Response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  "$ref": "#/components/schemas/ruleset-version"
+              examples:
+                default:
+                  "$ref": "#/components/examples/ruleset-history"
+        '404':
+          "$ref": "#/components/responses/not_found"
+        '500':
+          "$ref": "#/components/responses/internal_error"
+      x-github:
+        githubCloudOnly: false
+        enabledForGitHubApps: true
+        category: repos
+        subcategory: rules
+  "/repos/{owner}/{repo}/rulesets/{ruleset_id}/history/{version_id}":
+    get:
+      summary: Get repository ruleset version
+      description: Get a version of a repository ruleset.
+      tags:
+      - repos
+      operationId: repos/get-repo-ruleset-version
+      externalDocs:
+        description: API method documentation
+        url: https://docs.github.com/rest/repos/rules#get-repository-ruleset-version
+      parameters:
+      - "$ref": "#/components/parameters/owner"
+      - "$ref": "#/components/parameters/repo"
+      - name: ruleset_id
+        description: The ID of the ruleset.
+        in: path
+        required: true
+        schema:
+          type: integer
+      - name: version_id
+        description: The ID of the version
+        in: path
+        required: true
+        schema:
+          type: integer
+      responses:
+        '200':
+          description: Response
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ruleset-version-with-state"
+              examples:
+                default:
+                  "$ref": "#/components/examples/repository-ruleset-version-with-state"
+        '404':
+          "$ref": "#/components/responses/not_found"
+        '500':
+          "$ref": "#/components/responses/internal_error"
+      x-github:
+        githubCloudOnly: false
+        enabledForGitHubApps: true
+        category: repos
+        subcategory: rules
   "/repos/{owner}/{repo}/secret-scanning/alerts":
     get:
       summary: List secret scanning alerts for a repository
@@ -71728,6 +71911,12 @@ components:
           - 'null'
           description: Whether the detected secret was found in multiple repositories
             in the same organization or enterprise.
+        is_base64_encoded:
+          type:
+          - boolean
+          - 'null'
+          description: A boolean value representing whether or not alert is base64
+            encoded
     actor:
       title: Actor
       description: Actor
@@ -75353,6 +75542,10 @@ components:
           "$ref": "#/components/schemas/code-scanning-alert-instance"
         repository:
           "$ref": "#/components/schemas/simple-repository"
+        dismissal_approved_by:
+          anyOf:
+          - type: 'null'
+          - "$ref": "#/components/schemas/simple-user"
       required:
       - number
       - created_at
@@ -79644,6 +79837,39 @@ components:
                 - 'null'
                 description: The detailed failure message for the rule. Null if the
                   rule passed.
+    ruleset-version:
+      title: Ruleset version
+      type: object
+      description: The historical version of a ruleset
+      required:
+      - version_id
+      - actor
+      - updated_at
+      properties:
+        version_id:
+          type: integer
+          description: The ID of the previous version of the ruleset
+        actor:
+          type: object
+          description: The actor who updated the ruleset
+          properties:
+            id:
+              type: integer
+            type:
+              type: string
+        updated_at:
+          type: string
+          format: date-time
+    ruleset-version-with-state:
+      allOf:
+      - "$ref": "#/components/schemas/ruleset-version"
+      - type: object
+        required:
+        - state
+        properties:
+          state:
+            type: object
+            description: The state of the ruleset version
     repository-advisory-vulnerability:
       description: A product affected by the vulnerability detailed in a repository
         security advisory.
@@ -84394,6 +84620,10 @@ components:
           "$ref": "#/components/schemas/code-scanning-analysis-tool"
         most_recent_instance:
           "$ref": "#/components/schemas/code-scanning-alert-instance"
+        dismissal_approved_by:
+          anyOf:
+          - type: 'null'
+          - "$ref": "#/components/schemas/simple-user"
       required:
       - number
       - created_at
@@ -84499,6 +84729,10 @@ components:
           "$ref": "#/components/schemas/code-scanning-analysis-tool"
         most_recent_instance:
           "$ref": "#/components/schemas/code-scanning-alert-instance"
+        dismissal_approved_by:
+          anyOf:
+          - type: 'null'
+          - "$ref": "#/components/schemas/simple-user"
       required:
       - number
       - created_at
@@ -91705,6 +91939,12 @@ components:
           - 'null'
           description: Whether the detected secret was found in multiple repositories
             under the same organization or enterprise.
+        is_base64_encoded:
+          type:
+          - boolean
+          - 'null'
+          description: A boolean value representing whether or not alert is base64
+            encoded
     secret-scanning-alert-resolution-comment:
       description: An optional comment when closing an alert. Cannot be updated or
         deleted. Must be `null` when changing `state` to `open`.
@@ -107532,6 +107772,77 @@ components:
             url:
               type: string
               format: uri
+            dismissal_approved_by:
+              title: User
+              type:
+              - object
+              - 'null'
+              properties:
+                avatar_url:
+                  type: string
+                  format: uri
+                deleted:
+                  type: boolean
+                email:
+                  type:
+                  - string
+                  - 'null'
+                events_url:
+                  type: string
+                  format: uri-template
+                followers_url:
+                  type: string
+                  format: uri
+                following_url:
+                  type: string
+                  format: uri-template
+                gists_url:
+                  type: string
+                  format: uri-template
+                gravatar_id:
+                  type: string
+                html_url:
+                  type: string
+                  format: uri
+                id:
+                  type: integer
+                login:
+                  type: string
+                name:
+                  type: string
+                node_id:
+                  type: string
+                organizations_url:
+                  type: string
+                  format: uri
+                received_events_url:
+                  type: string
+                  format: uri
+                repos_url:
+                  type: string
+                  format: uri
+                site_admin:
+                  type: boolean
+                starred_url:
+                  type: string
+                  format: uri-template
+                subscriptions_url:
+                  type: string
+                  format: uri
+                type:
+                  type: string
+                  enum:
+                  - Bot
+                  - User
+                  - Organization
+                url:
+                  type: string
+                  format: uri
+                user_view_type:
+                  type: string
+              required:
+              - login
+              - id
           required:
           - number
           - created_at
@@ -107757,6 +108068,9 @@ components:
             url:
               type: string
               format: uri
+            dismissal_approved_by:
+              type:
+              - 'null'
           required:
           - number
           - created_at
@@ -211050,6 +211364,60 @@ components:
           enforcement: evaluate
           result: fail
           rule_type: commit_message_pattern
+    ruleset-history:
+      value:
+      - version_id: 3
+        actor:
+          id: 1
+          type: User
+        updated_at: 2024-010-23T16:29:47Z
+      - version_id: 2
+        actor:
+          id: 2
+          type: User
+        updated_at: '2024-09-23T16:29:47Z'
+      - version_id: 1
+        actor:
+          id: 1
+          type: User
+        updated_at: '2024-08-23T16:29:47Z'
+    org-ruleset-version-with-state:
+      value:
+      - version_id: 3
+        actor:
+          id: 1
+          type: User
+        updated_at: 2024-010-23T16:29:47Z
+        state:
+          id: 21
+          name: super cool ruleset
+          target: branch
+          source_type: Organization
+          source: my-org
+          enforcement: active
+          bypass_actors:
+          - actor_id: 234
+            actor_type: Team
+            bypass_mode: always
+          conditions:
+            ref_name:
+              include:
+              - refs/heads/main
+              - refs/heads/master
+              exclude:
+              - refs/heads/dev*
+            repository_name:
+              include:
+              - important_repository
+              - another_important_repository
+              exclude:
+              - unimportant_repository
+              protected: true
+          rules:
+          - type: commit_author_email_pattern
+            parameters:
+              operator: contains
+              pattern: github
     list-repository-advisories:
       value:
       - ghsa_id: GHSA-abcd-1234-efgh
@@ -223169,6 +223537,36 @@ components:
             href: https://github.com/monalisa/my-repo/rules/42
         created_at: '2023-07-15T08:43:03Z'
         updated_at: '2023-08-23T16:29:47Z'
+    repository-ruleset-version-with-state:
+      value:
+      - version_id: 3
+        actor:
+          id: 1
+          type: User
+        updated_at: 2024-010-23T16:29:47Z
+        state:
+          id: 42
+          name: super cool ruleset
+          target: branch
+          source_type: Repository
+          source: monalisa/my-repo
+          enforcement: active
+          bypass_actors:
+          - actor_id: 234
+            actor_type: Team
+            bypass_mode: always
+          conditions:
+            ref_name:
+              include:
+              - refs/heads/main
+              - refs/heads/master
+              exclude:
+              - refs/heads/dev*
+          rules:
+          - type: commit_author_email_pattern
+            parameters:
+              operator: contains
+              pattern: github
     secret-scanning-alert-list:
       value:
       - number: 2
