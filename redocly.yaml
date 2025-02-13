@@ -22,12 +22,15 @@ apis:
       github/webhooks-swap-description-and-symmary: on
       sparkle/operation-sparkle: on
 
+# @chunk {"steps": ["step1"]}
 logo:
   srcSet: './images/idearium-white.svg dark, ./images/idearium-black.svg light'
   altText: Idearium
   link: /
   favicon: images/favicon.ico
+# @chunk-end
 
+# @chunk {"steps": ["step2"]}
 navbar:
   items:
     - page: /products/api-hub/
@@ -44,7 +47,9 @@ navbar:
           label: GitHub GraphQL API
     - page: /widget
       label: Widget
+# @chunk-end
 
+# @chunk {"steps": ["step3"]}
 footer:
   items: 
     - group: Social
@@ -80,6 +85,7 @@ products:
     name: API Hub
     icon: ./images/api-hub-logo.jpg
     folder: products/api-hub
+# @chunk-end
 
 catalog:
   idearium-catalog:
