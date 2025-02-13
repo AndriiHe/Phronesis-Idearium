@@ -1,6 +1,10 @@
+<!-- @chunk {"steps": ["step5"]} -->
 {% partial file="/_partials/danger-admonition.md" /%}
+<!-- @chunk-end -->
 
-# Welcome to Idearium
+<!-- @chunk {"steps": ["step4"]} -->
+# Welcome to Idearium {{header-name}}
+<!-- @chunk-end -->
 
 We are pleased to welcome you to our <strong>"API Showdown"</strong> website! Here you will find information about three of the most popular and interesting public APIs:
 
@@ -16,6 +20,7 @@ Thank you for choosing our site! Start your journey into the API world right now
 
 ![giphy](images/giphy.gif)
 
+<!-- @chunk {"steps": ["step6"]} -->
 {% cards columns=3 %}
   {% card title="First card" variant="filled" %}
     I'm a **card**. 
@@ -27,3 +32,4 @@ Thank you for choosing our site! Start your journey into the API world right now
     I'm actually a brochure.
   {% /card %}
 {% /cards %}
+<!-- @chunk-end -->
