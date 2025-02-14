@@ -35626,7 +35626,7 @@ paths:
                 sub_issue_id:
                   type: integer
                   description: The id of the sub-issue to add. The sub-issue must
-                    belong to the same repository as the parent issue
+                    belong to the same repository owner as the parent issue
                 replace_parent:
                   type: boolean
                   description: Option that, when true, instructs the operation to
@@ -75948,8 +75948,8 @@ components:
       required:
       - key_id
       - key
-    copilot-seat-breakdown:
-      title: Copilot Business Seat Breakdown
+    copilot-organization-seat-breakdown:
+      title: Copilot Seat Breakdown
       description: The breakdown of Copilot Business seats for the organization.
       type: object
       properties:
@@ -75966,8 +75966,8 @@ components:
             of the current billing cycle.
         pending_invitation:
           type: integer
-          description: The number of seats that have been assigned to users that have
-            not yet accepted an invitation to this organization.
+          description: The number of users who have been invited to receive a Copilot
+            seat through this organization.
         active_this_cycle:
           type: integer
           description: The number of seats that have used Copilot during the current
@@ -75983,36 +75983,35 @@ components:
       type: object
       properties:
         seat_breakdown:
-          "$ref": "#/components/schemas/copilot-seat-breakdown"
+          "$ref": "#/components/schemas/copilot-organization-seat-breakdown"
         public_code_suggestions:
           type: string
-          description: The organization policy for allowing or disallowing Copilot
-            to make suggestions that match public code.
+          description: The organization policy for allowing or blocking suggestions
+            matching public code (duplication detection filter).
           enum:
           - allow
           - block
           - unconfigured
-          - unknown
         ide_chat:
           type: string
-          description: The organization policy for allowing or disallowing organization
-            members to use Copilot Chat within their editor.
+          description: The organization policy for allowing or disallowing Copilot
+            Chat in the IDE.
           enum:
           - enabled
           - disabled
           - unconfigured
         platform_chat:
           type: string
-          description: The organization policy for allowing or disallowing organization
-            members to use Copilot features within github.com.
+          description: The organization policy for allowing or disallowing Copilot
+            features on GitHub.com.
           enum:
           - enabled
           - disabled
           - unconfigured
         cli:
           type: string
-          description: The organization policy for allowing or disallowing organization
-            members to use Copilot within their CLI.
+          description: The organization policy for allowing or disallowing Copilot
+            in the CLI.
           enum:
           - enabled
           - disabled
@@ -76032,7 +76031,6 @@ components:
           enum:
           - business
           - enterprise
-          - unknown
       required:
       - seat_breakdown
       - public_code_suggestions
