@@ -4383,7 +4383,7 @@ paths:
       description: |-
         Gets information about an organization.
 
-        When the value of `two_factor_requirement_enabled` is `true`, the organization requires all members, billing managers, and outside collaborators to enable [two-factor authentication](https://docs.github.com/articles/securing-your-account-with-two-factor-authentication-2fa/).
+        When the value of `two_factor_requirement_enabled` is `true`, the organization requires all members, billing managers, outside collaborators, guest collaborators, repository collaborators, or everyone with access to any repository within the organization to enable [two-factor authentication](https://docs.github.com/articles/securing-your-account-with-two-factor-authentication-2fa/).
 
         To see the full details about an organization, the authenticated user must be an organization owner.
 
@@ -7977,6 +7977,14 @@ paths:
                   - disabled
                   - not_set
                   default: disabled
+                secret_scanning_delegated_alert_dismissal:
+                  type: string
+                  description: The enablement status of secret scanning delegated
+                    alert dismissal
+                  enum:
+                  - enabled
+                  - disabled
+                  - not_set
                 private_vulnerability_reporting:
                   type: string
                   description: The enablement status of private vulnerability reporting
@@ -8293,6 +8301,14 @@ paths:
                   type: string
                   description: The enablement status of secret scanning non-provider
                     patterns
+                  enum:
+                  - enabled
+                  - disabled
+                  - not_set
+                secret_scanning_delegated_alert_dismissal:
+                  type: string
+                  description: The enablement status of secret scanning delegated
+                    alert dismissal
                   enum:
                   - enabled
                   - disabled
@@ -25952,7 +25968,7 @@ paths:
       description: |-
         Commits an autofix for a code scanning alert.
 
-        If an autofix is commited as a result of this request, then this endpoint will return a 201 Created response.
+        If an autofix is committed as a result of this request, then this endpoint will return a 201 Created response.
 
         OAuth app tokens and personal access tokens (classic) need the `repo` scope to use this endpoint with private or public repositories, or the `public_repo` scope to use this endpoint with only public repositories.
       tags:
@@ -71025,6 +71041,13 @@ components:
           - enabled
           - disabled
           - not_set
+        secret_scanning_delegated_alert_dismissal:
+          type: string
+          description: The enablement status of secret scanning delegated alert dismissal
+          enum:
+          - enabled
+          - disabled
+          - not_set
         private_vulnerability_reporting:
           type: string
           description: The enablement status of private vulnerability reporting
@@ -79064,6 +79087,22 @@ components:
           type: string
           enum:
           - required_signatures
+    repository-rule-params-reviewer:
+      title: Reviewer
+      description: A required reviewing team
+      type: object
+      properties:
+        id:
+          type: integer
+          description: ID of the reviewer which must review changes to matching files.
+        type:
+          type: string
+          description: The type of the reviewer
+          enum:
+          - Team
+      required:
+      - id
+      - type
     repository-rule-params-required-reviewer-configuration:
       title: RequiredReviewerConfiguration
       description: A reviewing team, and file patterns describing which files they
@@ -79082,13 +79121,11 @@ components:
           description: Minimum number of approvals required from the specified team.
             If set to zero, the team will be added to the pull request but approval
             is optional.
-        reviewer_id:
-          type: string
-          description: Node ID of the team which must review changes to matching files.
+        reviewer:
+          "$ref": "#/components/schemas/repository-rule-params-reviewer"
       required:
       - file_patterns
       - minimum_approvals
-      - reviewer_id
     repository-rule-pull-request:
       title: pull_request
       description: Require all commits be made to a non-target branch and submitted
@@ -208449,6 +208486,7 @@ components:
             reviewer_type: TEAM
         secret_scanning_validity_checks: enabled
         secret_scanning_non_provider_patterns: enabled
+        secret_scanning_delegated_alert_dismissal: not_set
         private_vulnerability_reporting: enabled
         enforcement: enforced
         url: https://api.github.com/orgs/octo-org/code-security/configurations/17
@@ -208473,6 +208511,7 @@ components:
         secret_scanning_delegated_bypass: disabled
         secret_scanning_validity_checks: disabled
         secret_scanning_non_provider_patterns: disabled
+        secret_scanning_delegated_alert_dismissal: disabled
         private_vulnerability_reporting: enabled
         enforcement: enforced
         url: https://api.github.com/orgs/octo-org/code-security/configurations/1326
@@ -216342,6 +216381,7 @@ components:
           secret_scanning_delegated_bypass: disabled
           secret_scanning_validity_checks: disabled
           secret_scanning_non_provider_patterns: disabled
+          secret_scanning_delegated_alert_dismissal: disabled
           private_vulnerability_reporting: disabled
           enforcement: enforced
           url: https://api.github.com/orgs/octo-org/code-security/configurations/1325
