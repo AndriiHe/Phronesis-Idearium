@@ -7547,6 +7547,14 @@ paths:
         schema:
           type: string
         x-multi-segment: true
+      - name: predicate_type
+        description: |-
+          Optional filter for fetching attestations with a given predicate type.
+          This option accepts `provenance`, `sbom`, or freeform text for custom predicate types.
+        in: query
+        required: false
+        schema:
+          type: string
       responses:
         '200':
           description: Response
@@ -22482,6 +22490,14 @@ paths:
         schema:
           type: string
         x-multi-segment: true
+      - name: predicate_type
+        description: |-
+          Optional filter for fetching attestations with a given predicate type.
+          This option accepts `provenance`, `sbom`, or freeform text for custom predicate types.
+        in: query
+        required: false
+        schema:
+          type: string
       responses:
         '200':
           description: Response
@@ -49806,6 +49822,14 @@ paths:
         schema:
           type: string
         x-multi-segment: true
+      - name: predicate_type
+        description: |-
+          Optional filter for fetching attestations with a given predicate type.
+          This option accepts `provenance`, `sbom`, or freeform text for custom predicate types.
+        in: query
+        required: false
+        schema:
+          type: string
       responses:
         '200':
           description: Response
@@ -49820,14 +49844,28 @@ paths:
                       type: object
                       properties:
                         bundle:
-                          "$ref": "#/components/schemas/sigstore-bundle-0"
+                          type: object
+                          properties:
+                            mediaType:
+                              type: string
+                            verificationMaterial:
+                              type: object
+                              properties: {}
+                              additionalProperties: true
+                            dsseEnvelope:
+                              type: object
+                              properties: {}
+                              additionalProperties: true
+                          description: |-
+                            The attestation's Sigstore Bundle.
+                            Refer to the [Sigstore Bundle Specification](https://github.com/sigstore/protobuf-specs/blob/main/protos/sigstore_bundle.proto) for more information.
                         repository_id:
                           type: integer
                         bundle_url:
                           type: string
               examples:
                 default:
-                  value: 
+                  "$ref": "#/components/examples/list-attestations"
         '201':
           description: Response
           content:
@@ -79143,9 +79181,8 @@ components:
           properties:
             allowed_merge_methods:
               type: array
-              description: When merging pull requests, you can allow any combination
-                of merge commits, squashing, or rebasing. At least one option must
-                be enabled.
+              description: Array of allowed merge methods. Allowed values include
+                `merge`, `squash`, and `rebase`. At least one option must be enabled.
               items:
                 type: string
             dismiss_stale_reviews_on_push:
@@ -94884,78 +94921,6 @@ components:
       required:
       - starred_at
       - repo
-    sigstore-bundle-0:
-      title: Sigstore Bundle v0.1
-      description: Sigstore Bundle v0.1
-      type: object
-      properties:
-        mediaType:
-          type: string
-        verificationMaterial:
-          type: object
-          properties:
-            x509CertificateChain:
-              type: object
-              properties:
-                certificates:
-                  type: array
-                  items:
-                    type: object
-                    properties:
-                      rawBytes:
-                        type: string
-            tlogEntries:
-              type: array
-              items:
-                type: object
-                properties:
-                  logIndex:
-                    type: string
-                  logId:
-                    type: object
-                    properties:
-                      keyId:
-                        type: string
-                  kindVersion:
-                    type: object
-                    properties:
-                      kind:
-                        type: string
-                      version:
-                        type: string
-                  integratedTime:
-                    type: string
-                  inclusionPromise:
-                    type: object
-                    properties:
-                      signedEntryTimestamp:
-                        type: string
-                  inclusionProof:
-                    type:
-                    - string
-                    - 'null'
-                  canonicalizedBody:
-                    type: string
-            timestampVerificationData:
-              type:
-              - string
-              - 'null'
-        dsseEnvelope:
-          type: object
-          properties:
-            payload:
-              type: string
-            payloadType:
-              type: string
-            signatures:
-              type: array
-              items:
-                type: object
-                properties:
-                  sig:
-                    type: string
-                  keyid:
-                    type: string
     hovercard:
       title: Hovercard
       description: Hovercard
