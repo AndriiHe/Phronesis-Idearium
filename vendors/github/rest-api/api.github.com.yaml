@@ -17363,10 +17363,9 @@ paths:
     get:
       summary: List team projects
       description: |-
-        Lists the organization projects for a team.
-
-        > [!NOTE]
-        > You can also specify a team by `org_id` and `team_id` using the route `GET /organizations/{org_id}/team/{team_id}/projects`.
+        > [!WARNING]
+        > **Closing down notice:** Projects (classic) is being deprecated in favor of the new Projects experience.
+        > See the [changelog](https://github.blog/changelog/2024-05-23-sunset-notice-projects-classic/) for more information.
       tags:
       - teams
       operationId: teams/list-projects-in-org
@@ -17398,14 +17397,16 @@ paths:
         enabledForGitHubApps: true
         category: teams
         subcategory: teams
+        deprecationDate: '2024-05-23'
+        removalDate: '2025-04-01'
+      deprecated: true
   "/orgs/{org}/teams/{team_slug}/projects/{project_id}":
     get:
       summary: Check team permissions for a project
       description: |-
-        Checks whether a team has `read`, `write`, or `admin` permissions for an organization project. The response includes projects inherited from a parent team.
-
-        > [!NOTE]
-        > You can also specify a team by `org_id` and `team_id` using the route `GET /organizations/{org_id}/team/{team_id}/projects/{project_id}`.
+        > [!WARNING]
+        > **Closing down notice:** Projects (classic) is being deprecated in favor of the new Projects experience.
+        > See the [changelog](https://github.blog/changelog/2024-05-23-sunset-notice-projects-classic/) for more information.
       tags:
       - teams
       operationId: teams/check-permissions-for-project-in-org
@@ -17433,13 +17434,15 @@ paths:
         enabledForGitHubApps: true
         category: teams
         subcategory: teams
+        deprecationDate: '2024-05-23'
+        removalDate: '2025-04-01'
+      deprecated: true
     put:
       summary: Add or update team project permissions
       description: |-
-        Adds an organization project to a team. To add a project to a team or update the team's permission on a project, the authenticated user must have `admin` permissions for the project. The project and team must be part of the same organization.
-
-        > [!NOTE]
-        > You can also specify a team by `org_id` and `team_id` using the route `PUT /organizations/{org_id}/team/{team_id}/projects/{project_id}`.
+        > [!WARNING]
+        > **Closing down notice:** Projects (classic) is being deprecated in favor of the new Projects experience.
+        > See the [changelog](https://github.blog/changelog/2024-05-23-sunset-notice-projects-classic/) for more information.
       tags:
       - teams
       operationId: teams/add-or-update-project-permissions-in-org
@@ -17500,13 +17503,15 @@ paths:
         enabledForGitHubApps: true
         category: teams
         subcategory: teams
+        deprecationDate: '2024-05-23'
+        removalDate: '2025-04-01'
+      deprecated: true
     delete:
       summary: Remove a project from a team
       description: |-
-        Removes an organization project from a team. An organization owner or a team maintainer can remove any project from the team. To remove a project from a team as an organization member, the authenticated user must have `read` access to both the team and project, or `admin` access to the team or project. This endpoint removes the project from the team, but does not delete the project.
-
-        > [!NOTE]
-        > You can also specify a team by `org_id` and `team_id` using the route `DELETE /organizations/{org_id}/team/{team_id}/projects/{project_id}`.
+        > [!WARNING]
+        > **Closing down notice:** Projects (classic) is being deprecated in favor of the new Projects experience.
+        > See the [changelog](https://github.blog/changelog/2024-05-23-sunset-notice-projects-classic/) for more information.
       tags:
       - teams
       operationId: teams/remove-project-in-org
@@ -17525,6 +17530,9 @@ paths:
         enabledForGitHubApps: true
         category: teams
         subcategory: teams
+        deprecationDate: '2024-05-23'
+        removalDate: '2025-04-01'
+      deprecated: true
   "/orgs/{org}/teams/{team_slug}/repos":
     get:
       summary: List team repositories
@@ -43212,19 +43220,8 @@ paths:
     get:
       summary: Search issues and pull requests
       description: |-
-        Find issues by state and keyword. This method returns up to 100 results [per page](https://docs.github.com/rest/guides/using-pagination-in-the-rest-api).
-
-        When searching for issues, you can get text match metadata for the issue **title**, issue **body**, and issue **comment body** fields when you pass the `text-match` media type. For more details about how to receive highlighted
-        search results, see [Text match metadata](https://docs.github.com/rest/search/search#text-match-metadata).
-
-        For example, if you want to find the oldest unresolved Python bugs on Windows. Your query might look something like this.
-
-        `q=windows+label:bug+language:python+state:open&sort=created&order=asc`
-
-        This query searches for the keyword `windows`, within any open issue that is labeled as `bug`. The search runs across repositories whose primary language is Python. The results are sorted by creation date in ascending order, which means the oldest issues appear first in the search results.
-
-        > [!NOTE]
-        > For requests made by GitHub Apps with a user access token, you can't retrieve a combination of issues and pull requests in a single query. Requests that don't include the `is:issue` or `is:pull-request` qualifier will receive an HTTP `422 Unprocessable Entity` response. To get results for both issues and pull requests, you must send separate queries for issues and pull requests. For more information about the `is` qualifier, see "[Searching only issues or pull requests](https://docs.github.com/github/searching-for-information-on-github/searching-issues-and-pull-requests#search-only-issues-or-pull-requests)."
+        > [!WARNING]
+        > **Notice:** Search for issues and pull requests will be overridden by advanced search on September 4, 2025.
       tags:
       - search
       operationId: search/issues-and-pull-requests
@@ -43268,6 +43265,7 @@ paths:
       - "$ref": "#/components/parameters/order"
       - "$ref": "#/components/parameters/per-page"
       - "$ref": "#/components/parameters/page"
+      - "$ref": "#/components/parameters/issues-advanced-search"
       responses:
         '200':
           description: Response
@@ -43304,6 +43302,9 @@ paths:
         enabledForGitHubApps: true
         category: search
         subcategory: search
+        deprecationDate: '2025-03-04'
+        removalDate: '2025-09-04'
+      deprecated: true
   "/search/labels":
     get:
       summary: Search labels
@@ -44841,9 +44842,8 @@ paths:
       summary: List team projects (Legacy)
       description: |-
         > [!WARNING]
-        > **Endpoint closing down notice:** This endpoint route is closing down and will be removed from the Teams API. We recommend migrating your existing code to use the new [`List team projects`](https://docs.github.com/rest/teams/teams#list-team-projects) endpoint.
-
-        Lists the organization projects for a team.
+        > **Closing down notice:** Projects (classic) is being deprecated in favor of the new Projects experience.
+        > See the [changelog](https://github.blog/changelog/2024-05-23-sunset-notice-projects-classic/) for more information.
       tags:
       - teams
       operationId: teams/list-projects-legacy
@@ -44874,8 +44874,8 @@ paths:
       x-github:
         githubCloudOnly: false
         enabledForGitHubApps: true
-        removalDate: '2021-02-01'
-        deprecationDate: '2020-01-21'
+        removalDate: '2025-04-01'
+        deprecationDate: '2024-05-23'
         category: teams
         subcategory: teams
       deprecated: true
@@ -44884,9 +44884,8 @@ paths:
       summary: Check team permissions for a project (Legacy)
       description: |-
         > [!WARNING]
-        > **Endpoint closing down notice:** This endpoint route is closing down and will be removed from the Teams API. We recommend migrating your existing code to use the new [Check team permissions for a project](https://docs.github.com/rest/teams/teams#check-team-permissions-for-a-project) endpoint.
-
-        Checks whether a team has `read`, `write`, or `admin` permissions for an organization project. The response includes projects inherited from a parent team.
+        > **Closing down notice:** Projects (classic) is being deprecated in favor of the new Projects experience.
+        > See the [changelog](https://github.blog/changelog/2024-05-23-sunset-notice-projects-classic/) for more information.
       tags:
       - teams
       operationId: teams/check-permissions-for-project-legacy
@@ -44911,8 +44910,8 @@ paths:
       x-github:
         githubCloudOnly: false
         enabledForGitHubApps: true
-        removalDate: '2021-02-01'
-        deprecationDate: '2020-01-21'
+        removalDate: '2025-04-01'
+        deprecationDate: '2024-05-23'
         category: teams
         subcategory: teams
       deprecated: true
@@ -44920,9 +44919,8 @@ paths:
       summary: Add or update team project permissions (Legacy)
       description: |-
         > [!WARNING]
-        > **Endpoint closing down notice:** This endpoint route is closing down and will be removed from the Teams API. We recommend migrating your existing code to use the new [Add or update team project permissions](https://docs.github.com/rest/teams/teams#add-or-update-team-project-permissions) endpoint.
-
-        Adds an organization project to a team. To add a project to a team or update the team's permission on a project, the authenticated user must have `admin` permissions for the project. The project and team must be part of the same organization.
+        > **Closing down notice:** Projects (classic) is being deprecated in favor of the new Projects experience.
+        > See the [changelog](https://github.blog/changelog/2024-05-23-sunset-notice-projects-classic/) for more information.
       tags:
       - teams
       operationId: teams/add-or-update-project-permissions-legacy
@@ -44982,8 +44980,8 @@ paths:
       x-github:
         githubCloudOnly: false
         enabledForGitHubApps: true
-        removalDate: '2021-02-01'
-        deprecationDate: '2020-01-21'
+        removalDate: '2025-04-01'
+        deprecationDate: '2024-05-23'
         category: teams
         subcategory: teams
       deprecated: true
@@ -44991,9 +44989,8 @@ paths:
       summary: Remove a project from a team (Legacy)
       description: |-
         > [!WARNING]
-        > **Endpoint closing down notice:** This endpoint route is closing down and will be removed from the Teams API. We recommend migrating your existing code to use the new [Remove a project from a team](https://docs.github.com/rest/teams/teams#remove-a-project-from-a-team) endpoint.
-
-        Removes an organization project from a team. An organization owner or a team maintainer can remove any project from the team. To remove a project from a team as an organization member, the authenticated user must have `read` access to both the team and project, or `admin` access to the team or project. **Note:** This endpoint removes the project from the team, but does not delete it.
+        > **Closing down notice:** Projects (classic) is being deprecated in favor of the new Projects experience.
+        > See the [changelog](https://github.blog/changelog/2024-05-23-sunset-notice-projects-classic/) for more information.
       tags:
       - teams
       operationId: teams/remove-project-legacy
@@ -45013,8 +45010,8 @@ paths:
       x-github:
         githubCloudOnly: false
         enabledForGitHubApps: true
-        removalDate: '2021-02-01'
-        deprecationDate: '2020-01-21'
+        removalDate: '2025-04-01'
+        deprecationDate: '2024-05-23'
         category: teams
         subcategory: teams
       deprecated: true
@@ -51141,7 +51138,7 @@ paths:
         '200':
           description: Response
           content:
-            application/json:
+            text/plain:
               schema:
                 type: string
               examples:
@@ -230962,6 +230959,15 @@ components:
         - desc
         - asc
         default: desc
+    issues-advanced-search:
+      name: advanced_search
+      description: |-
+        Set to `true` to use advanced search.
+        Example: `http://api.github.com/search/issues?q={query}&advanced_search=true`
+      in: query
+      required: false
+      schema:
+        type: string
     team-id:
       name: team_id
       description: The unique identifier of the team.
@@ -231260,7 +231266,8 @@ components:
           schema:
             "$ref": "#/components/schemas/basic-error"
     dependency_review_forbidden:
-      description: Response if GitHub Advanced Security is not enabled for this repository
+      description: Response for a private repository when GitHub Advanced Security
+        is not enabled, or if used against a fork
       content:
         application/json:
           schema:
