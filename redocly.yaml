@@ -5,7 +5,7 @@ plugins:
 reunite:
   jobs:
     - path: '/arazzo-jobs/reports/hours.yaml'
-      agent: spot
+      agent: respect
       trigger:
         event: schedule
         interval: 1m
