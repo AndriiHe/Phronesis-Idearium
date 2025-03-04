@@ -1606,6 +1606,14 @@ paths:
                   - disabled
                   - not_set
                   default: disabled
+                secret_scanning_generic_secrets:
+                  type: string
+                  description: The enablement status of Copilot secret scanning
+                  enum:
+                  - enabled
+                  - disabled
+                  - not_set
+                  default: disabled
                 private_vulnerability_reporting:
                   type: string
                   description: The enablement status of private vulnerability reporting
@@ -1840,6 +1848,14 @@ paths:
                   - enabled
                   - disabled
                   - not_set
+                secret_scanning_generic_secrets:
+                  type: string
+                  description: The enablement status of Copilot secret scanning
+                  enum:
+                  - enabled
+                  - disabled
+                  - not_set
+                  default: disabled
                 private_vulnerability_reporting:
                   type: string
                   description: The enablement status of private vulnerability reporting
@@ -7985,6 +8001,14 @@ paths:
                   - disabled
                   - not_set
                   default: disabled
+                secret_scanning_generic_secrets:
+                  type: string
+                  description: The enablement status of Copilot secret scanning
+                  enum:
+                  - enabled
+                  - disabled
+                  - not_set
+                  default: disabled
                 secret_scanning_delegated_alert_dismissal:
                   type: string
                   description: The enablement status of secret scanning delegated
@@ -8309,6 +8333,13 @@ paths:
                   type: string
                   description: The enablement status of secret scanning non-provider
                     patterns
+                  enum:
+                  - enabled
+                  - disabled
+                  - not_set
+                secret_scanning_generic_secrets:
+                  type: string
+                  description: The enablement status of Copilot secret scanning
                   enum:
                   - enabled
                   - disabled
@@ -71072,6 +71103,13 @@ components:
         secret_scanning_non_provider_patterns:
           type: string
           description: The enablement status of secret scanning non-provider patterns
+          enum:
+          - enabled
+          - disabled
+          - not_set
+        secret_scanning_generic_secrets:
+          type: string
+          description: The enablement status of Copilot secret scanning
           enum:
           - enabled
           - disabled
@@ -193172,6 +193210,15 @@ components:
                   type: string
               required:
               - from
+            tag_name:
+              type: object
+              properties:
+                from:
+                  description: The previous version of the tag_name if the action
+                    was `edited`.
+                  type: string
+              required:
+              - from
             make_latest:
               type: object
               properties:
@@ -205080,6 +205127,7 @@ components:
         secret_scanning_delegated_bypass: disabled
         secret_scanning_validity_checks: disabled
         secret_scanning_non_provider_patterns: disabled
+        secret_scanning_generic_secrets: disabled
         private_vulnerability_reporting: disabled
         enforcement: enforced
         url: https://api.github.com/enterprises/octo-enterprise/code-security/configurations/1325
@@ -205171,6 +205219,7 @@ components:
         secret_scanning_delegated_bypass: disabled
         secret_scanning_validity_checks: disabled
         secret_scanning_non_provider_patterns: disabled
+        secret_scanning_generic_secrets: disabled
         private_vulnerability_reporting: disabled
         enforcement: enforced
         url: https://api.github.com/orgs/octo-org/code-security/configurations/1325
@@ -208502,6 +208551,7 @@ components:
         secret_scanning_delegated_bypass: disabled
         secret_scanning_validity_checks: disabled
         secret_scanning_non_provider_patterns: disabled
+        secret_scanning_generic_secrets: disabled
         private_vulnerability_reporting: disabled
         enforcement: enforced
         url: https://api.github.com/orgs/octo-org/code-security/configurations/1325
@@ -216343,6 +216393,7 @@ components:
           secret_scanning_delegated_bypass: disabled
           secret_scanning_validity_checks: disabled
           secret_scanning_non_provider_patterns: disabled
+          secret_scanning_generic_secrets: disabled
           secret_scanning_delegated_alert_dismissal: disabled
           private_vulnerability_reporting: disabled
           enforcement: enforced
