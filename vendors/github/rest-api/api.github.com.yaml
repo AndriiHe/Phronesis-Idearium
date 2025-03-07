@@ -1573,6 +1573,15 @@ paths:
                   default: disabled
                 code_scanning_default_setup_options:
                   "$ref": "#/components/schemas/code-scanning-default-setup-options"
+                code_scanning_delegated_alert_dismissal:
+                  type: string
+                  description: The enablement status of code scanning delegated alert
+                    dismissal
+                  enum:
+                  - enabled
+                  - disabled
+                  - not_set
+                  default: disabled
                 secret_scanning:
                   type: string
                   description: The enablement status of secret scanning
@@ -1609,6 +1618,15 @@ paths:
                 secret_scanning_generic_secrets:
                   type: string
                   description: The enablement status of Copilot secret scanning
+                  enum:
+                  - enabled
+                  - disabled
+                  - not_set
+                  default: disabled
+                secret_scanning_delegated_alert_dismissal:
+                  type: string
+                  description: The enablement status of secret scanning delegated
+                    alert dismissal
                   enum:
                   - enabled
                   - disabled
@@ -1819,6 +1837,15 @@ paths:
                   - not_set
                 code_scanning_default_setup_options:
                   "$ref": "#/components/schemas/code-scanning-default-setup-options"
+                code_scanning_delegated_alert_dismissal:
+                  type: string
+                  description: The enablement status of code scanning delegated alert
+                    dismissal
+                  enum:
+                  - enabled
+                  - disabled
+                  - not_set
+                  default: disabled
                 secret_scanning:
                   type: string
                   description: The enablement status of secret scanning
@@ -1851,6 +1878,15 @@ paths:
                 secret_scanning_generic_secrets:
                   type: string
                   description: The enablement status of Copilot secret scanning
+                  enum:
+                  - enabled
+                  - disabled
+                  - not_set
+                  default: disabled
+                secret_scanning_delegated_alert_dismissal:
+                  type: string
+                  description: The enablement status of secret scanning delegated
+                    alert dismissal
                   enum:
                   - enabled
                   - disabled
@@ -7935,6 +7971,15 @@ paths:
                   default: disabled
                 code_scanning_default_setup_options:
                   "$ref": "#/components/schemas/code-scanning-default-setup-options"
+                code_scanning_delegated_alert_dismissal:
+                  type: string
+                  description: The enablement status of code scanning delegated alert
+                    dismissal
+                  enum:
+                  - enabled
+                  - disabled
+                  - not_set
+                  default: not_set
                 secret_scanning:
                   type: string
                   description: The enablement status of secret scanning
@@ -8276,6 +8321,15 @@ paths:
                   - not_set
                 code_scanning_default_setup_options:
                   "$ref": "#/components/schemas/code-scanning-default-setup-options"
+                code_scanning_delegated_alert_dismissal:
+                  type: string
+                  description: The enablement status of code scanning delegated alert
+                    dismissal
+                  enum:
+                  - enabled
+                  - disabled
+                  - not_set
+                  default: disabled
                 secret_scanning:
                   type: string
                   description: The enablement status of secret scanning
@@ -25893,6 +25947,8 @@ paths:
                   "$ref": "#/components/schemas/code-scanning-alert-dismissed-reason"
                 dismissed_comment:
                   "$ref": "#/components/schemas/code-scanning-alert-dismissed-comment"
+                create_request:
+                  "$ref": "#/components/schemas/code-scanning-alert-create-request"
               required:
               - state
             examples:
@@ -25902,6 +25958,7 @@ paths:
                   dismissed_reason: false positive
                   dismissed_comment: This alert is not actually correct, because there's
                     a sanitizer included in the library.
+                  create_request: true
       responses:
         '200':
           description: Response
@@ -25912,6 +25969,8 @@ paths:
               examples:
                 default:
                   "$ref": "#/components/examples/code-scanning-alert-dismissed"
+        '400':
+          "$ref": "#/components/responses/bad_request"
         '403':
           "$ref": "#/components/responses/code_scanning_forbidden_write"
         '404':
@@ -71050,6 +71109,13 @@ components:
               - 'null'
               description: The label of the runner to use for code scanning when runner_type
                 is 'labeled'.
+        code_scanning_delegated_alert_dismissal:
+          type: string
+          description: The enablement status of code scanning delegated alert dismissal
+          enum:
+          - enabled
+          - disabled
+          - not_set
         secret_scanning:
           type: string
           description: The enablement status of secret scanning
@@ -71823,6 +71889,21 @@ components:
               enum:
               - development
               - runtime
+              - 
+            relationship:
+              type:
+              - string
+              - 'null'
+              description: |
+                The vulnerable dependency's relationship to your project.
+
+                > [!NOTE]
+                > We are rolling out support for dependency relationship across ecosystems. This value will be "unknown" for all dependencies in unsupported ecosystems.
+              readOnly: true
+              enum:
+              - unknown
+              - direct
+              - transitive
               - 
         security_advisory:
           "$ref": "#/components/schemas/dependabot-alert-security-advisory"
@@ -84869,6 +84950,9 @@ components:
       enum:
       - open
       - dismissed
+    code-scanning-alert-create-request:
+      type: boolean
+      description: If `true`, attempt to create an alert dismissal request.
     code-scanning-autofix-status:
       type: string
       description: The status of an autofix.
@@ -87186,6 +87270,21 @@ components:
               enum:
               - development
               - runtime
+              - 
+            relationship:
+              type:
+              - string
+              - 'null'
+              description: |
+                The vulnerable dependency's relationship to your project.
+
+                > [!NOTE]
+                > We are rolling out support for dependency relationship across ecosystems. This value will be "unknown" for all dependencies in unsupported ecosystems.
+              readOnly: true
+              enum:
+              - unknown
+              - direct
+              - transitive
               - 
         security_advisory:
           "$ref": "#/components/schemas/dependabot-alert-security-advisory"
@@ -205122,12 +205221,14 @@ components:
         dependabot_alerts: enabled
         dependabot_security_updates: not_set
         code_scanning_default_setup: disabled
+        code_scanning_delegated_alert_dismissal: disabled
         secret_scanning: enabled
         secret_scanning_push_protection: disabled
         secret_scanning_delegated_bypass: disabled
         secret_scanning_validity_checks: disabled
         secret_scanning_non_provider_patterns: disabled
         secret_scanning_generic_secrets: disabled
+        secret_scanning_delegated_alert_dismissal: disabled
         private_vulnerability_reporting: disabled
         enforcement: enforced
         url: https://api.github.com/enterprises/octo-enterprise/code-security/configurations/1325
@@ -205214,12 +205315,14 @@ components:
         code_scanning_default_setup_options:
           runner_type: not_set
           runner_label: 
+        code_scanning_delegated_alert_dismissal: disabled
         secret_scanning: enabled
         secret_scanning_push_protection: disabled
         secret_scanning_delegated_bypass: disabled
         secret_scanning_validity_checks: disabled
         secret_scanning_non_provider_patterns: disabled
         secret_scanning_generic_secrets: disabled
+        secret_scanning_delegated_alert_dismissal: disabled
         private_vulnerability_reporting: disabled
         enforcement: enforced
         url: https://api.github.com/orgs/octo-org/code-security/configurations/1325
@@ -208487,6 +208590,7 @@ components:
         dependabot_alerts: enabled
         dependabot_security_updates: not_set
         code_scanning_default_setup: enabled
+        code_scanning_delagated_alert_dismissal: enabled
         secret_scanning: enabled
         secret_scanning_push_protection: enabled
         secret_scanning_delegated_bypass: enabled
@@ -208517,6 +208621,7 @@ components:
         dependabot_alerts: enabled
         dependabot_security_updates: enabled
         code_scanning_default_setup: enabled
+        code_scanning_delagated_alert_dismissal: enabled
         secret_scanning: enabled
         secret_scanning_push_protection: enabled
         secret_scanning_delegated_bypass: disabled
@@ -208546,12 +208651,14 @@ components:
         code_scanning_default_setup_options:
           runner_type: not_set
           runner_label: 
+        code_scanning_delegated_alert_dismissal: disabled
         secret_scanning: disabled
         secret_scanning_push_protection: disabled
         secret_scanning_delegated_bypass: disabled
         secret_scanning_validity_checks: disabled
         secret_scanning_non_provider_patterns: disabled
         secret_scanning_generic_secrets: disabled
+        secret_scanning_delegated_alert_dismissal: disabled
         private_vulnerability_reporting: disabled
         enforcement: enforced
         url: https://api.github.com/orgs/octo-org/code-security/configurations/1325
@@ -216388,6 +216495,7 @@ components:
           dependabot_alerts: enabled
           dependabot_security_updates: not_set
           code_scanning_default_setup: disabled
+          code_scanning_delegated_alert_dismissal: disabled
           secret_scanning: enabled
           secret_scanning_push_protection: disabled
           secret_scanning_delegated_bypass: disabled
@@ -229826,7 +229934,7 @@ components:
       name: secret_type
       in: query
       description: A comma-separated list of secret types to return. All default secret
-        patterns are returned. To return experimental patterns, pass the token name(s)
+        patterns are returned. To return generic patterns, pass the token name(s)
         in the parameter. See "[Supported secret scanning patterns](https://docs.github.com/enterprise-cloud@latest/code-security/secret-scanning/introduction/supported-secret-scanning-patterns#supported-secrets)"
         for a complete list of secret types.
       required: false
