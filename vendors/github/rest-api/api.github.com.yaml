@@ -4921,12 +4921,6 @@ paths:
                       - github
                       - partner
                       - custom
-                    version:
-                      description: The version of the runner image to deploy. This
-                        is relevant only for runners using custom images.
-                      type:
-                      - string
-                      - 'null'
                 size:
                   description: The machine size of the runner. To list available sizes,
                     use `GET actions/hosted-runners/machine-sizes`
@@ -4956,7 +4950,6 @@ paths:
                   image:
                     id: ubuntu-latest
                     source: github
-                    version: latest
                   runner_group_id: 1
                   size: 4-core
                   maximum_runners: 50
@@ -5232,12 +5225,6 @@ paths:
                     public IP. Note limit on account. To list limits on account, use
                     `GET actions/hosted-runners/limits`
                   type: boolean
-                image_version:
-                  description: The version of the runner image to deploy. This is
-                    relevant only for runners using custom images.
-                  type:
-                  - string
-                  - 'null'
             examples:
               default:
                 value:
@@ -5245,7 +5232,6 @@ paths:
                   runner_group_id: 1
                   maximum_runners: 50
                   enable_static_ip: false
-                  image_version: 1.0.0
       responses:
         '200':
           description: Response
@@ -74866,11 +74852,6 @@ components:
           - github
           - partner
           - custom
-        version:
-          description: The image version of the hosted runner pool.
-          type: string
-          examples:
-          - latest
       required:
       - id
       - size_gb
