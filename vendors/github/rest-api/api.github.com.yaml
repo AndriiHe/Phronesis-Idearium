@@ -13313,6 +13313,7 @@ paths:
       - "$ref": "#/components/parameters/personal-access-token-permission"
       - "$ref": "#/components/parameters/personal-access-token-before"
       - "$ref": "#/components/parameters/personal-access-token-after"
+      - "$ref": "#/components/parameters/personal-access-token-token-id"
       responses:
         '500':
           "$ref": "#/components/responses/internal_error"
@@ -13555,6 +13556,7 @@ paths:
       - "$ref": "#/components/parameters/personal-access-token-permission"
       - "$ref": "#/components/parameters/personal-access-token-before"
       - "$ref": "#/components/parameters/personal-access-token-after"
+      - "$ref": "#/components/parameters/personal-access-token-token-id"
       responses:
         '500':
           "$ref": "#/components/responses/internal_error"
@@ -27672,7 +27674,7 @@ paths:
         Creates or updates a repository development environment secret with an encrypted value. Encrypt your secret using
         [LibSodium](https://libsodium.gitbook.io/doc/bindings_for_other_languages). For more information, see "[Encrypting secrets for the REST API](https://docs.github.com/rest/guides/encrypting-secrets-for-the-rest-api)."
 
-        OAuth app tokens and personal access tokens (classic) need the `repo` scope to use this endpoint.
+        OAuth app tokens and personal access tokens (classic) need the `repo` scope to use this endpoint. The associated user must be a repository admin.
       tags:
       - codespaces
       operationId: codespaces/create-or-update-repo-secret
@@ -27727,7 +27729,7 @@ paths:
       description: |-
         Deletes a development environment secret in a repository using the secret name.
 
-        OAuth app tokens and personal access tokens (classic) need the `repo` scope to use this endpoint.
+        OAuth app tokens and personal access tokens (classic) need the `repo` scope to use this endpoint. The associated user must be a repository admin.
       tags:
       - codespaces
       operationId: codespaces/delete-repo-secret
@@ -31015,7 +31017,7 @@ paths:
 
         The authenticated user must have admin or owner permissions to the repository to use this endpoint.
 
-        For more information about the app that is providing this custom deployment rule, see the [documentation for the `GET /apps/{app_slug}` endpoint](https://docs.github.com/rest/apps/apps#get-an-app).
+        For more information about the app that is providing this custom deployment rule, see the [documentation for the `GET /apps/{app_slug}` endpoint](https://docs.github.com/rest/apps/apps#get-an-app), as well as the [guide to creating custom deployment protection rules](https://docs.github.com/actions/managing-workflow-runs-and-deployments/managing-deployments/creating-custom-deployment-protection-rules).
 
         OAuth app tokens and personal access tokens (classic) need the `repo` scope to use this endpoint.
       tags:
@@ -68874,6 +68876,7 @@ components:
         id:
           description: Unique identifier of the webhook delivery.
           type: integer
+          format: int64
           examples:
           - 42
         guid:
@@ -68926,6 +68929,7 @@ components:
           type:
           - integer
           - 'null'
+          format: int64
           examples:
           - 123
         repository_id:
@@ -68933,6 +68937,7 @@ components:
           type:
           - integer
           - 'null'
+          format: int64
           examples:
           - 123
         throttled_at:
@@ -230474,6 +230479,18 @@ components:
       schema:
         type: string
         format: date-time
+    personal-access-token-token-id:
+      name: token_id
+      description: The ID of the token
+      in: query
+      required: false
+      schema:
+        type: array
+        maxItems: 50
+        items:
+          type: string
+        examples:
+        - token_id[]=1,token_id[]=2
     fine-grained-personal-access-token-id:
       name: pat_id
       description: The unique identifier of the fine-grained personal access token.
