@@ -11626,6 +11626,160 @@ paths:
         enabledForGitHubApps: true
         category: orgs
         subcategory: members
+  "/orgs/{org}/issue-types":
+    get:
+      summary: List issue types for an organization
+      description: Lists all issue types for an organization.
+      tags:
+      - orgs
+      operationId: orgs/list-issue-types
+      externalDocs:
+        description: API method documentation
+        url: https://docs.github.com/rest/orgs/issue-types#list-issue-types-for-an-organization
+      parameters:
+      - "$ref": "#/components/parameters/org"
+      responses:
+        '200':
+          description: Response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  "$ref": "#/components/schemas/issue-type"
+              examples:
+                default:
+                  "$ref": "#/components/examples/issue-type-items"
+        '404':
+          "$ref": "#/components/responses/not_found"
+      x-github:
+        githubCloudOnly: false
+        enabledForGitHubApps: true
+        category: orgs
+        subcategory: issue-types
+    post:
+      summary: Create issue type for an organization
+      description: |-
+        Create a new issue type for an organization.
+
+        You can find out more about issue types in [Managing issue types in an organization](https://docs.github.com/issues/tracking-your-work-with-issues/configuring-issues/managing-issue-types-in-an-organization).
+      tags:
+      - orgs
+      operationId: orgs/create-issue-type
+      externalDocs:
+        description: API method documentation
+        url: https://docs.github.com/rest/orgs/issue-types#create-issue-type-for-an-organization
+      parameters:
+      - "$ref": "#/components/parameters/org"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/organization-create-issue-type"
+            examples:
+              default:
+                value:
+                  name: Epic
+                  description: An issue type for a multi-week tracking of work
+                  is_enabled: true
+                  color: green
+                  is_private: true
+      responses:
+        '200':
+          description: Response
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/issue-type"
+              examples:
+                default:
+                  "$ref": "#/components/examples/issue-type"
+        '404':
+          "$ref": "#/components/responses/not_found"
+        '422':
+          "$ref": "#/components/responses/validation_failed_simple"
+      x-github:
+        githubCloudOnly: false
+        enabledForGitHubApps: true
+        category: orgs
+        subcategory: issue-types
+  "/orgs/{org}/issue-types/{issue_type_id}":
+    put:
+      summary: Update issue type for an organization
+      description: |-
+        Updates an issue type for an organization.
+
+        You can find out more about issue types in [Managing issue types in an organization](https://docs.github.com/issues/tracking-your-work-with-issues/configuring-issues/managing-issue-types-in-an-organization).
+      tags:
+      - orgs
+      operationId: orgs/update-issue-type
+      externalDocs:
+        description: API method documentation
+        url: https://docs.github.com/rest/orgs/issue-types#update-issue-type-for-an-organization
+      parameters:
+      - "$ref": "#/components/parameters/org"
+      - "$ref": "#/components/parameters/issue-type-id"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/organization-update-issue-type"
+            examples:
+              default:
+                value:
+                  name: Epic
+                  description: An issue type for a multi-week tracking of work
+                  is_enabled: true
+                  color: green
+                  is_private: true
+      responses:
+        '200':
+          description: Response
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/issue-type"
+              examples:
+                default:
+                  "$ref": "#/components/examples/issue-type"
+        '404':
+          "$ref": "#/components/responses/not_found"
+        '422':
+          "$ref": "#/components/responses/validation_failed_simple"
+      x-github:
+        githubCloudOnly: false
+        enabledForGitHubApps: true
+        category: orgs
+        subcategory: issue-types
+    delete:
+      summary: Delete issue type for an organization
+      description: |-
+        Deletes an issue type for an organization.
+
+        You can find out more about issue types in [Managing issue types in an organization](https://docs.github.com/issues/tracking-your-work-with-issues/configuring-issues/managing-issue-types-in-an-organization).
+      tags:
+      - orgs
+      operationId: orgs/delete-issue-type
+      externalDocs:
+        description: API method documentation
+        url: https://docs.github.com/rest/orgs/issue-types#delete-issue-type-for-an-organization
+      parameters:
+      - "$ref": "#/components/parameters/org"
+      - "$ref": "#/components/parameters/issue-type-id"
+      responses:
+        '204':
+          description: Response
+        '422':
+          "$ref": "#/components/responses/validation_failed_simple"
+        '404':
+          "$ref": "#/components/responses/not_found"
+      x-github:
+        githubCloudOnly: false
+        enabledForGitHubApps: true
+        category: orgs
+        subcategory: issue-types
   "/orgs/{org}/issues":
     get:
       summary: List organization issues assigned to the authenticated user
@@ -11679,6 +11833,12 @@ paths:
           - all
           default: open
       - "$ref": "#/components/parameters/labels"
+      - name: type
+        description: Can be the name of an issue type.
+        in: query
+        required: false
+        schema:
+          type: string
       - name: sort
         description: What to sort results by.
         in: query
@@ -14274,6 +14434,10 @@ paths:
       summary: Create or update custom properties for an organization
       description: |-
         Creates new or updates existing custom properties defined for an organization in a batch.
+
+        If the property already exists, the existing property will be replaced with the new values.
+        Missing optional values will fall back to default values, previous values will be overwritten.
+        E.g. if a property exists with `values_editable_by: org_and_repo_actors` and it's updated without specifying `values_editable_by`, it will be updated to default value `org_actors`.
 
         To use this endpoint, the authenticated user must be one of:
           - An administrator for the organization.
@@ -33990,6 +34154,14 @@ paths:
         required: false
         schema:
           type: string
+      - name: type
+        description: Can be the name of an issue type. If the string `*` is passed,
+          issues with any type are accepted. If the string `none` is passed, issues
+          without type are returned.
+        in: query
+        required: false
+        schema:
+          type: string
       - name: creator
         description: The user that created the issue.
         in: query
@@ -34130,6 +34302,13 @@ paths:
                     are silently dropped otherwise._'
                   items:
                     type: string
+                type:
+                  type:
+                  - string
+                  - 'null'
+                  description: The name of the issue type to associate with this issue.
+                  examples:
+                  - Epic
               required:
               - title
             examples:
@@ -34739,6 +34918,14 @@ paths:
                     push access to the repository, assignee changes are silently dropped.
                   items:
                     type: string
+                type:
+                  type:
+                  - string
+                  - 'null'
+                  description: The name of the issue type to associate with this issue
+                    or use `null` to remove the current issue type.
+                  examples:
+                  - Epic
             examples:
               default:
                 value:
@@ -69234,7 +69421,7 @@ components:
           - write
         dependabot_secrets:
           type: string
-          description: The leve of permission to grant the access token to manage
+          description: The level of permission to grant the access token to manage
             Dependabot secrets.
           enum:
           - read
@@ -72219,6 +72406,58 @@ components:
       - url
       - created_at
       - updated_at
+    issue-type:
+      title: Issue Type
+      description: The type of issue.
+      type:
+      - object
+      - 'null'
+      properties:
+        id:
+          type: integer
+          description: The unique identifier of the issue type.
+        node_id:
+          type: string
+          description: The node identifier of the issue type.
+        name:
+          type: string
+          description: The name of the issue type.
+        description:
+          type:
+          - string
+          - 'null'
+          description: The description of the issue type.
+        color:
+          type:
+          - string
+          - 'null'
+          description: The color of the issue type.
+          enum:
+          - gray
+          - blue
+          - green
+          - yellow
+          - orange
+          - red
+          - pink
+          - purple
+          - 
+        created_at:
+          type: string
+          description: The time the issue type created.
+          format: date-time
+        updated_at:
+          type: string
+          description: The time the issue type last updated.
+          format: date-time
+        is_enabled:
+          type: boolean
+          description: The enabled state of the issue type.
+      required:
+      - id
+      - node_id
+      - name
+      - description
     author-association:
       title: author_association
       type: string
@@ -72468,6 +72707,8 @@ components:
         timeline_url:
           type: string
           format: uri
+        type:
+          "$ref": "#/components/schemas/issue-type"
         repository:
           "$ref": "#/components/schemas/repository"
         performed_via_github_app:
@@ -77272,6 +77513,80 @@ components:
           "$ref": "#/components/schemas/interaction-expiry"
       required:
       - limit
+    organization-create-issue-type:
+      type: object
+      properties:
+        name:
+          description: Name of the issue type.
+          type: string
+        is_enabled:
+          description: Whether or not the issue type is enabled at the organization
+            level.
+          type: boolean
+        is_private:
+          description: Whether or not the issue type is restricted to issues in private
+            repositories.
+          type: boolean
+        description:
+          description: Description of the issue type.
+          type:
+          - string
+          - 'null'
+        color:
+          description: Color for the issue type.
+          type:
+          - string
+          - 'null'
+          enum:
+          - gray
+          - blue
+          - green
+          - yellow
+          - orange
+          - red
+          - pink
+          - purple
+          - 
+      required:
+      - name
+      - is_enabled
+    organization-update-issue-type:
+      type: object
+      properties:
+        name:
+          description: Name of the issue type.
+          type: string
+        is_enabled:
+          description: Whether or not the issue type is enabled at the organization
+            level.
+          type: boolean
+        is_private:
+          description: Whether or not the issue type is restricted to issues in private
+            repositories.
+          type: boolean
+        description:
+          description: Description of the issue type.
+          type:
+          - string
+          - 'null'
+        color:
+          description: Color for the issue type.
+          type:
+          - string
+          - 'null'
+          enum:
+          - gray
+          - blue
+          - green
+          - yellow
+          - orange
+          - red
+          - pink
+          - purple
+          - 
+      required:
+      - name
+      - is_enabled
     org-membership:
       title: Org Membership
       description: Org Membership
@@ -78258,6 +78573,17 @@ components:
           description: |-
             An ordered list of the allowed values of the property.
             The property can have up to 200 allowed values.
+        values_editable_by:
+          type:
+          - string
+          - 'null'
+          enum:
+          - org_actors
+          - org_and_repo_actors
+          - 
+          description: Who can edit the values of the property
+          examples:
+          - org_actors
       required:
       - value_type
     custom-property-value:
@@ -93505,6 +93831,8 @@ components:
         timeline_url:
           type: string
           format: uri
+        type:
+          "$ref": "#/components/schemas/issue-type"
         performed_via_github_app:
           anyOf:
           - type: 'null'
@@ -98497,6 +98825,8 @@ components:
         title:
           description: Title of the issue
           type: string
+        type:
+          "$ref": "#/components/schemas/issue-type"
         updated_at:
           type: string
           format: date-time
@@ -99577,6 +99907,8 @@ components:
         title:
           description: Title of the issue
           type: string
+        type:
+          "$ref": "#/components/schemas/issue-type"
         updated_at:
           type: string
           format: date-time
@@ -117219,6 +117551,8 @@ components:
               title:
                 description: Title of the issue
                 type: string
+              type:
+                "$ref": "#/components/schemas/issue-type"
               updated_at:
                 type: string
                 format: date-time
@@ -118430,6 +118764,8 @@ components:
               title:
                 description: Title of the issue
                 type: string
+              type:
+                "$ref": "#/components/schemas/issue-type"
               updated_at:
                 type: string
                 format: date-time
@@ -119648,6 +119984,8 @@ components:
               title:
                 description: Title of the issue
                 type: string
+              type:
+                "$ref": "#/components/schemas/issue-type"
               updated_at:
                 type: string
                 format: date-time
@@ -120891,6 +121229,8 @@ components:
               title:
                 description: Title of the issue
                 type: string
+              type:
+                "$ref": "#/components/schemas/issue-type"
               updated_at:
                 type: string
                 format: date-time
@@ -121993,6 +122333,8 @@ components:
             title:
               description: Title of the issue
               type: string
+            type:
+              "$ref": "#/components/schemas/issue-type"
             updated_at:
               type: string
               format: date-time
@@ -122976,6 +123318,8 @@ components:
             title:
               description: Title of the issue
               type: string
+            type:
+              "$ref": "#/components/schemas/issue-type"
             updated_at:
               type: string
               format: date-time
@@ -123938,6 +124282,8 @@ components:
             timeline_url:
               type: string
               format: uri
+            type:
+              "$ref": "#/components/schemas/issue-type"
             title:
               description: Title of the issue
               type: string
@@ -124905,6 +125251,8 @@ components:
             timeline_url:
               type: string
               format: uri
+            type:
+              "$ref": "#/components/schemas/issue-type"
             title:
               description: Title of the issue
               type: string
@@ -125896,6 +126244,8 @@ components:
             timeline_url:
               type: string
               format: uri
+            type:
+              "$ref": "#/components/schemas/issue-type"
             title:
               description: Title of the issue
               type: string
@@ -126859,6 +127209,8 @@ components:
             title:
               description: Title of the issue
               type: string
+            type:
+              "$ref": "#/components/schemas/issue-type"
             updated_at:
               type: string
               format: date-time
@@ -129223,6 +129575,8 @@ components:
             title:
               description: Title of the issue
               type: string
+            type:
+              "$ref": "#/components/schemas/issue-type"
             updated_at:
               type: string
               format: date-time
@@ -130314,6 +130668,8 @@ components:
                   format: uri
                 user_view_type:
                   type: string
+            type:
+              "$ref": "#/components/schemas/issue-type"
         organization:
           "$ref": "#/components/schemas/organization-simple-webhooks"
         repository:
@@ -131172,6 +131528,8 @@ components:
                 title:
                   description: Title of the issue
                   type: string
+                type:
+                  "$ref": "#/components/schemas/issue-type"
                 updated_at:
                   type: string
                   format: date-time
@@ -132700,6 +133058,8 @@ components:
             title:
               description: Title of the issue
               type: string
+            type:
+              "$ref": "#/components/schemas/issue-type"
             updated_at:
               type: string
               format: date-time
@@ -209743,6 +210103,28 @@ components:
         members_url: https://api.github.com/teams/1/members{/member}
         repositories_url: https://api.github.com/teams/1/repos
         parent: 
+    issue-type-items:
+      value:
+      - id: 410
+        node_id: IT_kwDNAd3NAZo
+        name: Task
+        description: A specific piece of work
+        created_at: '2024-12-11T14:39:09Z'
+        updated_at: '2024-12-11T14:39:09Z'
+      - id: 411
+        node_id: IT_kwDNAd3NAZs
+        name: Bug
+        description: An unexpected problem or behavior
+        created_at: '2024-12-11T14:39:09Z'
+        updated_at: '2024-12-11T14:39:09Z'
+    issue-type:
+      value:
+        id: 410
+        node_id: IT_kwDNAd3NAZo
+        name: Task
+        description: A specific piece of work
+        created_at: '2024-12-11T14:39:09Z'
+        updated_at: '2024-12-11T14:39:09Z'
     codespace:
       value:
         id: 1
@@ -230334,6 +230716,13 @@ components:
     invitation-id:
       name: invitation_id
       description: The unique identifier of the invitation.
+      in: path
+      required: true
+      schema:
+        type: integer
+    issue-type-id:
+      name: issue_type_id
+      description: The unique identifier of the issue type.
       in: path
       required: true
       schema:
