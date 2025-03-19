@@ -11684,7 +11684,6 @@ paths:
                   description: An issue type for a multi-week tracking of work
                   is_enabled: true
                   color: green
-                  is_private: true
       responses:
         '200':
           description: Response
@@ -11733,7 +11732,6 @@ paths:
                   description: An issue type for a multi-week tracking of work
                   is_enabled: true
                   color: green
-                  is_private: true
       responses:
         '200':
           description: Response
@@ -59382,9 +59380,6 @@ webhooks:
         This event occurs when there is activity relating to a request for a fine-grained personal access token to access resources that belong to a resource owner that requires approval for token access. For more information, see "[Creating a personal access token](https://docs.github.com/authentication/keeping-your-account-and-data-secure/creating-a-personal-access-token)."
 
         To subscribe to this event, a GitHub App must have at least read-level access for the "Personal access token requests" organization permission.
-
-        > [!NOTE]
-        > Fine-grained PATs are in public preview. Related APIs, events, and functionality are subject to change.
       description: A fine-grained personal access token request was approved.
       operationId: personal-access-token-request/approved
       externalDocs:
@@ -59441,15 +59436,13 @@ webhooks:
         subcategory: personal_access_token_request
         supported-webhook-types:
         - app
+        - organization
   personal-access-token-request-cancelled:
     post:
       summary: |-
         This event occurs when there is activity relating to a request for a fine-grained personal access token to access resources that belong to a resource owner that requires approval for token access. For more information, see "[Creating a personal access token](https://docs.github.com/authentication/keeping-your-account-and-data-secure/creating-a-personal-access-token)."
 
         To subscribe to this event, a GitHub App must have at least read-level access for the "Personal access token requests" organization permission.
-
-        > [!NOTE]
-        > Fine-grained PATs are in public preview. Related APIs, events, and functionality are subject to change.
       description: A fine-grained personal access token request was cancelled by the
         requester.
       operationId: personal-access-token-request/cancelled
@@ -59507,15 +59500,13 @@ webhooks:
         subcategory: personal_access_token_request
         supported-webhook-types:
         - app
+        - organization
   personal-access-token-request-created:
     post:
       summary: |-
         This event occurs when there is activity relating to a request for a fine-grained personal access token to access resources that belong to a resource owner that requires approval for token access. For more information, see "[Creating a personal access token](https://docs.github.com/authentication/keeping-your-account-and-data-secure/creating-a-personal-access-token)."
 
         To subscribe to this event, a GitHub App must have at least read-level access for the "Personal access token requests" organization permission.
-
-        > [!NOTE]
-        > Fine-grained PATs are in public preview. Related APIs, events, and functionality are subject to change.
       description: A fine-grained personal access token request was created.
       operationId: personal-access-token-request/created
       externalDocs:
@@ -59572,15 +59563,13 @@ webhooks:
         subcategory: personal_access_token_request
         supported-webhook-types:
         - app
+        - organization
   personal-access-token-request-denied:
     post:
       summary: |-
         This event occurs when there is activity relating to a request for a fine-grained personal access token to access resources that belong to a resource owner that requires approval for token access. For more information, see "[Creating a personal access token](https://docs.github.com/authentication/keeping-your-account-and-data-secure/creating-a-personal-access-token)."
 
         To subscribe to this event, a GitHub App must have at least read-level access for the "Personal access token requests" organization permission.
-
-        > [!NOTE]
-        > Fine-grained PATs are in public preview. Related APIs, events, and functionality are subject to change.
       description: A fine-grained personal access token request was denied.
       operationId: personal-access-token-request/denied
       externalDocs:
@@ -59637,6 +59626,7 @@ webhooks:
         subcategory: personal_access_token_request
         supported-webhook-types:
         - app
+        - organization
   ping:
     post:
       summary: This event occurs when you create a new webhook. The ping event is
@@ -79614,6 +79604,10 @@ components:
                 `merge`, `squash`, and `rebase`. At least one option must be enabled.
               items:
                 type: string
+                enum:
+                - merge
+                - squash
+                - rebase
             dismiss_stale_reviews_on_push:
               type: boolean
               description: New, reviewable commits pushed will dismiss previous pull
@@ -79870,6 +79864,97 @@ components:
           required:
           - operator
           - pattern
+    repository-rule-file-path-restriction:
+      title: file_path_restriction
+      description: Prevent commits that include changes in specified file paths from
+        being pushed to the commit graph.
+      type: object
+      required:
+      - type
+      properties:
+        type:
+          type: string
+          enum:
+          - file_path_restriction
+        parameters:
+          type: object
+          properties:
+            restricted_file_paths:
+              type: array
+              description: The file paths that are restricted from being pushed to
+                the commit graph.
+              items:
+                type: string
+          required:
+          - restricted_file_paths
+    repository-rule-max-file-path-length:
+      title: max_file_path_length
+      description: Prevent commits that include file paths that exceed a specified
+        character limit from being pushed to the commit graph.
+      type: object
+      required:
+      - type
+      properties:
+        type:
+          type: string
+          enum:
+          - max_file_path_length
+        parameters:
+          type: object
+          properties:
+            max_file_path_length:
+              type: integer
+              description: The maximum amount of characters allowed in file paths
+              minimum: 1
+              maximum: 256
+          required:
+          - max_file_path_length
+    repository-rule-file-extension-restriction:
+      title: file_extension_restriction
+      description: Prevent commits that include files with specified file extensions
+        from being pushed to the commit graph.
+      type: object
+      required:
+      - type
+      properties:
+        type:
+          type: string
+          enum:
+          - file_extension_restriction
+        parameters:
+          type: object
+          properties:
+            restricted_file_extensions:
+              type: array
+              description: The file extensions that are restricted from being pushed
+                to the commit graph.
+              items:
+                type: string
+          required:
+          - restricted_file_extensions
+    repository-rule-max-file-size:
+      title: max_file_size
+      description: Prevent commits that exceed a specified file size limit from being
+        pushed to the commit graph.
+      type: object
+      required:
+      - type
+      properties:
+        type:
+          type: string
+          enum:
+          - max_file_size
+        parameters:
+          type: object
+          properties:
+            max_file_size:
+              type: integer
+              description: The maximum file size allowed in megabytes. This limit
+                does not apply to Git Large File Storage (Git LFS).
+              minimum: 1
+              maximum: 100
+          required:
+          - max_file_size
     repository-rule-params-restricted-commits:
       title: RestrictedCommits
       description: Restricted commit
@@ -80007,93 +80092,10 @@ components:
       - "$ref": "#/components/schemas/repository-rule-committer-email-pattern"
       - "$ref": "#/components/schemas/repository-rule-branch-name-pattern"
       - "$ref": "#/components/schemas/repository-rule-tag-name-pattern"
-      - title: file_path_restriction
-        description: Prevent commits that include changes in specified file paths
-          from being pushed to the commit graph.
-        type: object
-        required:
-        - type
-        properties:
-          type:
-            type: string
-            enum:
-            - file_path_restriction
-          parameters:
-            type: object
-            properties:
-              restricted_file_paths:
-                type: array
-                description: The file paths that are restricted from being pushed
-                  to the commit graph.
-                items:
-                  type: string
-            required:
-            - restricted_file_paths
-      - title: max_file_path_length
-        description: Prevent commits that include file paths that exceed a specified
-          character limit from being pushed to the commit graph.
-        type: object
-        required:
-        - type
-        properties:
-          type:
-            type: string
-            enum:
-            - max_file_path_length
-          parameters:
-            type: object
-            properties:
-              max_file_path_length:
-                type: integer
-                description: The maximum amount of characters allowed in file paths
-                minimum: 1
-                maximum: 256
-            required:
-            - max_file_path_length
-      - title: file_extension_restriction
-        description: Prevent commits that include files with specified file extensions
-          from being pushed to the commit graph.
-        type: object
-        required:
-        - type
-        properties:
-          type:
-            type: string
-            enum:
-            - file_extension_restriction
-          parameters:
-            type: object
-            properties:
-              restricted_file_extensions:
-                type: array
-                description: The file extensions that are restricted from being pushed
-                  to the commit graph.
-                items:
-                  type: string
-            required:
-            - restricted_file_extensions
-      - title: max_file_size
-        description: Prevent commits that exceed a specified file size limit from
-          being pushed to the commit graph.
-        type: object
-        required:
-        - type
-        properties:
-          type:
-            type: string
-            enum:
-            - max_file_size
-          parameters:
-            type: object
-            properties:
-              max_file_size:
-                type: integer
-                description: The maximum file size allowed in megabytes. This limit
-                  does not apply to Git Large File Storage (Git LFS).
-                minimum: 1
-                maximum: 100
-            required:
-            - max_file_size
+      - "$ref": "#/components/schemas/repository-rule-file-path-restriction"
+      - "$ref": "#/components/schemas/repository-rule-max-file-path-length"
+      - "$ref": "#/components/schemas/repository-rule-file-extension-restriction"
+      - "$ref": "#/components/schemas/repository-rule-max-file-size"
       - "$ref": "#/components/schemas/repository-rule-workflows"
       - "$ref": "#/components/schemas/repository-rule-code-scanning"
     repository-ruleset:
@@ -92357,6 +92359,18 @@ components:
         - "$ref": "#/components/schemas/repository-rule-ruleset-info"
       - allOf:
         - "$ref": "#/components/schemas/repository-rule-tag-name-pattern"
+        - "$ref": "#/components/schemas/repository-rule-ruleset-info"
+      - allOf:
+        - "$ref": "#/components/schemas/repository-rule-file-path-restriction"
+        - "$ref": "#/components/schemas/repository-rule-ruleset-info"
+      - allOf:
+        - "$ref": "#/components/schemas/repository-rule-max-file-path-length"
+        - "$ref": "#/components/schemas/repository-rule-ruleset-info"
+      - allOf:
+        - "$ref": "#/components/schemas/repository-rule-file-extension-restriction"
+        - "$ref": "#/components/schemas/repository-rule-ruleset-info"
+      - allOf:
+        - "$ref": "#/components/schemas/repository-rule-max-file-size"
         - "$ref": "#/components/schemas/repository-rule-ruleset-info"
       - allOf:
         - "$ref": "#/components/schemas/repository-rule-workflows"
