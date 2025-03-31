@@ -2,6 +2,8 @@
 - page: information-architecture.md
 - page: api-comparison.md
   label: APIs comparison
+- page: ./products/changelog.md
+  label: Changelog
 #- page: code-walk-docker/index.md
 #  label: Code Walkthrough  
 

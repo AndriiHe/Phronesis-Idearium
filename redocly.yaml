@@ -47,6 +47,8 @@ navbar:
           label: GitHub GraphQL API
     - page: /widget
       label: Widget
+    - page: ./products/changelog
+      label: Changelog
 # @chunk-end
 
 # @chunk {"steps": ["step3"]}

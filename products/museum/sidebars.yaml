@@ -3,3 +3,5 @@
 - page: './@v2/museum.yaml'
   label: Museum
 # - page: museum.yaml
+- page: ./changelog.md
+  label: Changelog
