@@ -1,9 +1,9 @@
-import type { ApiFunctionsRequest, ApiFunctionsResponse, ApiFunctionsContext } from '@redocly/config';
+import type { ApiFunctionsContext } from '@redocly/config';
 
-export default async function (request: ApiFunctionsRequest, response: ApiFunctionsResponse, context: ApiFunctionsContext) {
+export default async function (_request: Request, context: ApiFunctionsContext) {
    try {
     // Get client IP address (X-Forwarded-For header is commonly used for client IP behind proxies)
-    const clientIp = request.headers['x-forwarded-for'] || request.connection.remoteAddress || '8.8.8.8'; // Fallback to Google DNS IP
+    const clientIp = context.headers['x-forwarded-for'] || context.connection.remoteAddress || '8.8.8.8'; // Fallback to Google DNS IP
     
     // WeatherAPI can automatically detect location from IP
     const weatherResponse = await fetch(
@@ -13,7 +13,7 @@ export default async function (request: ApiFunctionsRequest, response: ApiFuncti
     const parsedWhether = await weatherResponse.json()
     const { location, current } = parsedWhether;
     
-    return response.status(200).json({
+    return context.status(200).json({
       ip: clientIp,
       location: {
         city: location.name,
@@ -36,7 +36,7 @@ export default async function (request: ApiFunctionsRequest, response: ApiFuncti
     });
   } catch (error) {
     console.error('Error fetching weather data:', error);
-    return response.status(500).json({ 
+    return context.status(500).json({ 
       error: 'Failed to fetch weather data',
       message: error.message 
     });
